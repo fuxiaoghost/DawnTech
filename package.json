@@ -1,6 +1,6 @@
 {
-  "name": "dawntech.top",
-  "description": "Dawn see sun",
+  "name": "reecho.baichanghui.com",
+  "description": "tech design share",
   "version": "1.0.0",
   "scripts": {
     "dev": "webpack-dev-server --hot --config build/webpack.base.config.js --progress",
@@ -22,14 +22,14 @@
     "babel-preset-stage-2": "^6.24.1",
     "cross-env": "^4.0.0",
     "css-loader": "^0.28.0",
-    "extract-text-webpack-plugin": "^3.0.0",
+    "extract-text-webpack-plugin": "^2.1.0",
     "html-webpack-plugin": "^2.28.0",
     "node-sass": "^4.5.2",
     "rimraf": "^2.6.1",
-    "sass-loader": "^6.0.6",
+    "sass-loader": "^6.0.3",
     "vue-loader": "^11.3.4",
     "vue-template-compiler": "^2.2.6",
-    "webpack": "^3.5.6",
+    "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.2",
     "webpack-merge": "^4.1.0"
   }
