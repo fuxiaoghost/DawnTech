@@ -3,14 +3,23 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 const HOME = resolve => require(['./views/home.vue'], resolve);
-const ARTICLE = resolve => require(['./views/article.vue'], resolve);
+const KNBRUSH = resolve => require(['./views/knbrush.vue'], resolve);
+const NOTE = resolve => require(['./views/note.vue'], resolve);
+const BLOG = resolve => require(['./views/blog.vue'], resolve);
+const PHOTOS = resolve => require(['./views/photos.vue'], resolve);
+const RESUME = resolve => require(['./views/resume.vue'], resolve);
+
 
 var router = new Router({
     mode: 'history',
     scrollBehavior: () => ({ y: 0 }),
     routes: [
-        { path: '/article/:id', name: 'article',component: ARTICLE },
-        { path: '/', name: 'home',component: HOME }
+        { path: '/', name: 'home',component: HOME },
+        { path: '/knbrush', name: 'knbrush', component: KNBRUSH},
+        { path: '/note', name: 'note', component: NOTE},
+        { path: '/blog', name: 'blog', component: BLOG},
+        { path: '/photos', name: 'photos', component: PHOTOS},
+        { path: '/resume', name: 'resume', component: RESUME}
     ]
 });
 

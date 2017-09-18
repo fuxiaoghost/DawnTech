@@ -23,8 +23,17 @@ export default {
             title: '主页',
             url: '/'
         }, {
-            title: '团队介绍',
-            url: '/article/about-us'
+            title: '信手涂鸦',
+            url: '/knbrush'
+        },{
+            title: '手记',
+            url: '/note'
+        },{
+            title: '影集',
+            url: '/photos'
+        },{
+            title: '简历',
+            url: 'resume'
         }];
 
         window.onscroll = () => {
