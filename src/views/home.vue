@@ -1,195 +1,185 @@
 <template>
     <div class="home">
         <nav-bar :index="0"></nav-bar>
-        <a class="header" 
-            :target="linkTarget"
-            :href="`/article/${banner.articleId}`"
-            :style="{'background-image':`url(${banner.coverBanner})`}">
-            <span class="title">
-                {{banner.title}}
-                <span class="author">作者：{{banner.author}}</span>
-            </span>
-        </a>
-        <div class="articles">
-            <a class="article-item" 
-                :target="linkTarget"
-                :href="`/article/${item.articleId}`"
-                v-if="!item.hidden"
-                v-for="item in articles">
-                <span class="article-cover">
-                    <img :src="item.cover" />
-                </span>
-                <span class="article-info">
-                    <span class="title">{{item.title}}</span>
-                    <span class="author">{{item.author}} {{item.date}}</span>
-                </span>
-            </a>
+        <div class="content">
+            <div class="header">
+                <div class="carousel-wrap" id="carousel">
+                    <transition-group tag="ul" class='slide-ul' name="list">
+                        <li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
+                            <a :href="list.clickUrl">
+                                <img :src="list.image" :alt="list.desc">
+                            </a>
+                        </li>
+                    </transition-group>
+                    <div class="carousel-items">
+                        <span v-for="(item,index) in slideList.length" :class="{'active':index===currentIndex}" @mouseover="change(index)"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="articles">
+                <a class="article-item" :target="linkTarget" :href="`/article/${item.articleId}`" v-if="!item.hidden" v-for="item in articles">
+                    <span class="article-cover">
+                        <img :src="item.cover" />
+                    </span>
+                    <span class="article-info">
+                        <span class="title">{{item.title}}</span>
+                        <span class="author">{{item.author}} {{item.date}}</span>
+                    </span>
+                </a>
+            </div>
         </div>
         <foot></foot>
     </div>
 </template>
 <script>
-    import navBar from '../components/nav-bar.vue';
-    import foot from '../components/foot.vue';
-    export default{
-        components: { navBar, foot },
-        data: function(){
-            return {
-                articles: [],
-                banner: {}
-            }
+import navBar from '../components/nav-bar.vue';
+import foot from '../components/foot.vue';
+export default {
+    components: { navBar, foot },
+    data: function() {
+        return {
+            slideList: [{
+                "clickUrl": "#",
+                "desc": "nhwc",
+                "image": "http://dummyimage.com/1745x492/f1d65b"
+            }, {
+                "clickUrl": "#",
+                "desc": "hxrj",
+                "image": "http://dummyimage.com/1745x492/40b7ea"
+            }, {
+                "clickUrl": "#",
+                "desc": "rsdh",
+                "image": "http://dummyimage.com/1745x492/e3c933"
+            }],
+            currentIndex: 0,
+            timer: ''
+        }
+    },
+    computed: {
+        isMobile: function() {
+            return !!navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i);
         },
-        computed: {
-            isMobile: function(){
-                return !!navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i);
-            },
-            linkTarget: function(){
-                return this.isMobile ? '' : '_blank';
-            }
+        linkTarget: function() {
+            return this.isMobile ? '' : '_blank';
+        }
+    },
+    created: function() {
+        this.init();
+    },
+    methods: {
+        init: function() {
+            this.$nextTick(() => {
+                this.timer = setInterval(() => {
+                    this.autoPlay()
+                }, 4000)
+            })
         },
-        created: function(){
-            this.init();
+        go: function() {
+            this.timer = setInterval(() => {
+                this.autoPlay()
+            }, 4000)
         },
-        methods: {
-            init: function() {
-                // this.$http.get('/api/metadataservice/metadata/{scope}/{key}', {
-                //     params: {
-                //         scope: 'promotion',
-                //         key: 'articles'
-                //     }
-                // }).then((resp) => {
-                //     if(resp && resp.body && resp.body.items) {
-                //         this.articles = resp.body.items;
-                //         this.banner = this.articles[0];
-                //     }
-                // });
+        stop: function() {
+            clearInterval(this.timer)
+            this.timer = null
+        },
+        change: function(index) {
+            this.currentIndex = index
+        },
+        autoPlay: function() {
+            this.currentIndex++
+            if (this.currentIndex > this.slideList.length - 1) {
+                this.currentIndex = 0
             }
         }
     }
+}
 </script>
 <style lang="sass">
-    .home {
+.home {
+    text-align: center; 
+    .content {
+        width: 100%;
+        display: inline-block;
         .header {
             height: 332px;
-            background-repeat: no-repeat;
-            background-position: 50%;
-            background-color: #eee;
-            display: block;
-            position: relative;
-            .title {
-                display: block;
-                padding-top: 120px;
-                font-size: 50px;
-                text-align: center;
-                color: #fff;
-                .author {
-                    display: block;
-                    text-align: center;
-                    font-size: 20px;
-                    padding-top: 5px;
-                }
+            width: 100%;
+            .carousel-wrap {
+                position: relative;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
             }
-        }
-        .articles {
-            margin: 15px auto 20px;
-            text-align: left;
-            width: 1020px;
-            transition: width 0.5s ease;
-            .article-item {
-                height: 300px;
-                width: 310px;
-                background-color: #fff;
-                margin: 15px;
-                display: inline-block;
-                transition: all 0.5s ease;
-                &:hover {
-                    box-shadow: #ccc 0px 6px 16px;
-                }
-                .article-cover {
-                    height: 200px;
+            .slide-ul {
+                height: 100%;
+                padding: 0px;
+                margin: 0px;
+                li {
+                    position: absolute;
                     width: 100%;
-                    display: block;
-                    background-repeat: no-repeat;
-                    background-position: 50%;
-                    background-color: #eee;
-                    overflow: hidden;
-                    img {
-                        transition: all 0.8s ease;
-                        height: 200px;
-                        &:hover {
-                            height: 220px;
-                        }
-                    }
-                }
-                .article-info {
-                    display: block;
-                    padding: 20px;
-                    text-align: left;
-                    .title {
-                        font-size: 20px;
-                        line-height: 20px;
-                        display: block;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
-                    .author {
-                        font-size: 14px;
-                        color: #666;
-                        display: block;
-                        margin-top: 15px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
-                }
-            }
-        }
-    
-        @media screen and (max-width: 500px) {
-            .header {
-                .title {
-                    font-size: 30px;
-                }
-            }
-            .articles {
-                width: auto;
-                margin: 10px;
-                text-align: center;
-                .article-item {
-                    width: 100%;
-                    height: 270px;
-                    margin: 0 0 10px 0;
+                    height: 100%;
+                    padding: 0px;
                     img {
                         width: 100%;
-                        height: auto !important;;
-                    }
-                    .article-info {
-                        padding: 10px;
-                        .author {
-                            margin-top: 10px;
-                        }
+                        height: 100%;
                     }
                 }
             }
-        }
-    
-        @media screen and (min-width: 800px) {
-            .articles {
-                width: 680px;
+            .carousel-items {
+                position: absolute;
+                z-index: 10;
+                top: 302px;
+                width: 100%;
+                margin: 0 auto;
+                text-align: center;
+                font-size: 0;
+                span {
+                    display: inline-block;
+                    height: 6px;
+                    width: 30px;
+                    margin: 0 3px;
+                    background-color: rgba(255, 255, 255, 0.6);
+                    cursor: pointer;
+                }
+                .active {
+                    background-color: rgb(255, 255, 255);
+                }
             }
-        }
-    
-        @media screen and (min-width: 1024px) {
-            .articles {
-                width: 1020px;
+            .list-enter-active {
+                transition: all 1s ease;
+                transform: translateX(0);
             }
-        }
-    
-        @media screen and (min-width: 1360px) {
-            .articles {
-                width: 1360px;
+            .list-leave-active {
+                transition: all 1s ease;
+                transform: translateX(-100%);
+            }
+            .list-enter {
+                transform: translateX(100%);
+            }
+            .list-leave {
+                transform: translateX(0);
             }
         }
     }
+    @media screen and (max-width: 500px) {
+        .content {
+            width: 100%;
+        }
+    }
+    @media screen and (min-width: 800px) {
+        .content {
+            width: 680px;
+        }
+    }
+    @media screen and (min-width: 1024px) {
+        .content {
+            width: 1020px;
+        }
+    }
+    @media screen and (min-width: 1360px) {
+        .content {
+            width: 1360px;
+        }
+    }
+}
 </style>
