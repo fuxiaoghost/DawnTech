@@ -16,16 +16,16 @@
                     </div>
                 </div>
             </div>
-            <div class="articles">
-                <a class="article-item" :target="linkTarget" :href="`/article/${item.articleId}`" v-if="!item.hidden" v-for="item in articles">
-                    <span class="article-cover">
-                        <img :src="item.cover" />
-                    </span>
-                    <span class="article-info">
-                        <span class="title">{{item.title}}</span>
-                        <span class="author">{{item.author}} {{item.date}}</span>
-                    </span>
-                </a>
+            <div class="item" v-for="item in items">
+                <div class="title">{{item.title}}</div>
+                <div class="content">
+                    <div class="leftimage">
+                        <div></div>
+                    </div>
+                    <div class="rightimage">
+                        <div></div>
+                    </div>
+                </div>
             </div>
         </div>
         <foot></foot>
@@ -52,6 +52,13 @@ export default {
                 "image": "http://dummyimage.com/1745x492/e3c933"
             }],
             currentIndex: 0,
+            items: [{
+                "title": "信手涂鸦"
+            },{
+                "title": "手记"
+            },{
+                "title": "摄影集"
+            }],
             timer: ''
         }
     },
@@ -158,6 +165,41 @@ export default {
             }
             .list-leave {
                 transform: translateX(0);
+            }
+        }
+        .item {
+            .title {
+                margin-top: 20px;
+                font-size: 20px;
+                color: #333;
+                text-align: left; 
+                font-weight: bold;
+                border-bottom: 1px solid #e9e9e9;
+                width: 100%;
+            }
+            .content {
+                margin-top: 10px;
+                width: 100%;
+                .leftimage {
+                    width: 50%;
+                    height: 400px;
+                    float: left;
+                    div {
+                        margin: 0px 5px 0px 0px;
+                        height: 100%;
+                        background-color: #ccc;
+                    }
+                }
+                .rightimage {
+                    width: 50%;
+                    height: 400px;
+                    float: left;
+                    div {
+                        margin: 0px 0px 0px 5px;
+                        height: 100%;
+                        background-color: #ccc;
+                    }
+                }
             }
         }
     }

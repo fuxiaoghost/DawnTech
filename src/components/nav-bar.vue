@@ -29,7 +29,7 @@ export default {
             title: '手记',
             url: '/note'
         },{
-            title: '影集',
+            title: '摄影集',
             url: '/photos'
         },{
             title: '简历',
@@ -53,7 +53,7 @@ export default {
     .nav-bar {
         height: 60px;
         line-height: 60px;
-        background-color: #000;
+        background-color: #333;
         color: #fff;
         position: fixed;
         width: 100%;
