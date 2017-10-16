@@ -19,12 +19,12 @@
             <div class="item" v-for="item in items">
                 <div class="title">{{item.title}}</div>
                 <div class="content">
-                    <div class="leftimage">
-                        <div></div>
-                    </div>
-                    <div class="rightimage">
-                        <div></div>
-                    </div>
+                    <a class="image-item" v-for="subitem in item.subitems" :href="`/article/${subitem.id}`" >
+                        <span class="image-cover">
+                            <img :src="subitem.image" />
+                        </span>
+                        <span class="image-title">{{subitem.title}}</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -53,11 +53,14 @@ export default {
             }],
             currentIndex: 0,
             items: [{
-                "title": "信手涂鸦"
-            },{
-                "title": "手记"
-            },{
-                "title": "摄影集"
+                "title": "信手涂鸦",
+                "subitems": [{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦", "id": "1" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }]
+            }, {
+                "title": "手记",
+                "subitems": [{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }]
+            }, {
+                "title": "摄影集",
+                "subitems": [{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "摄影集" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "摄影集" }]
             }],
             timer: ''
         }
@@ -121,6 +124,7 @@ export default {
                 height: 100%;
                 padding: 0px;
                 margin: 0px;
+                list-style: none;
                 li {
                     position: absolute;
                     width: 100%;
@@ -170,6 +174,7 @@ export default {
         .item {
             .title {
                 margin-top: 20px;
+                padding-bottom: 10px;
                 font-size: 20px;
                 color: #333;
                 text-align: left; 
@@ -180,24 +185,34 @@ export default {
             .content {
                 margin-top: 10px;
                 width: 100%;
-                .leftimage {
-                    width: 50%;
-                    height: 400px;
-                    float: left;
-                    div {
-                        margin: 0px 5px 0px 0px;
-                        height: 100%;
-                        background-color: #ccc;
+                text-align: left;
+                .image-item {
+                    width: 310px;
+                    height: 260px;
+                    display: inline-block;
+                    background-color: #eee;
+                    margin: 15px;
+                    transition: all 0.5s ease;
+                    &:hover {
+                        box-shadow: #ccc 0px 6px 16px;
                     }
-                }
-                .rightimage {
-                    width: 50%;
-                    height: 400px;
-                    float: left;
-                    div {
-                        margin: 0px 0px 0px 5px;
-                        height: 100%;
+                    .image-cover {
+                        height: 200px;
+                        width: 100%;
+                        display: block;
                         background-color: #ccc;
+                        overflow: hidden;
+                    }
+                    .image-title {
+                        display: block;
+                        text-align:left;
+                        background-color: #fff;
+                        padding: 0px 20px;
+                        font-size: 20px;
+                        line-height: 60px;
+                        height: 60px;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                     }
                 }
             }

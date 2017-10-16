@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <nav-bar :index="0"></nav-bar>
+        <nav-bar :index="1"></nav-bar>
         <a class="header" 
             :target="linkTarget"
             :href="`/article/${banner.articleId}`"

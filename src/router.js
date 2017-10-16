@@ -8,6 +8,7 @@ const NOTE = resolve => require(['./views/note.vue'], resolve);
 const BLOG = resolve => require(['./views/blog.vue'], resolve);
 const PHOTOS = resolve => require(['./views/photos.vue'], resolve);
 const RESUME = resolve => require(['./views/resume.vue'], resolve);
+const ARTICLE = resolve => require(['./views/article.vue'], resolve);
 
 
 var router = new Router({
@@ -19,7 +20,8 @@ var router = new Router({
         { path: '/note', name: 'note', component: NOTE},
         { path: '/blog', name: 'blog', component: BLOG},
         { path: '/photos', name: 'photos', component: PHOTOS},
-        { path: '/resume', name: 'resume', component: RESUME}
+        { path: '/resume', name: 'resume', component: RESUME},
+        { path: '/article/:id', name: 'article',component: ARTICLE },
     ]
 });
 

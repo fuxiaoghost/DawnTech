@@ -1,7 +1,6 @@
 <template>
 	<div class="article">
-		<nav-bar :index="3"></nav-bar>
-		<div class="header" :style="{'background-image':`url(${article&&article.coverBanner})`}"></div>
+		<nav-bar></nav-bar>
 		<div class="container">
 			<div class="article-content" v-html="htmlContent"></div>
 		</div>
@@ -23,29 +22,11 @@ export default {
 	},
 	created: function () {
 		this.convert(this.$route.params.id);
-		this.detail(this.$route.params.id);
 	},
 	methods: {
 		convert: function (aid) {
 			md2html.convertSrc('/assets/data/' + aid + '.markdown', (err, result) => {
 				this.htmlContent = result;
-			});
-		},
-		detail: function (aid) {
-			this.$http.get('/api/metadataservice/metadata/{scope}/{key}', {
-				params: {
-					scope: 'promotion',
-					key: 'articles'
-				}
-			}).then((resp) => {
-				if (resp && resp.body && resp.body.items) {
-					this.articles = resp.body.items;
-					this.article = this.articles.filter(function (value) {
-						if (value.articleId === aid) {
-							return true;
-						}
-					})[0];
-				}
 			});
 		}
 	}
@@ -53,13 +34,8 @@ export default {
 </script>
 <style lang="sass">
 .article {
-	background-color: #fff;
-	.header {
-		height: 200px;
-		background-repeat: no-repeat;
-		background-position: center;
-		background-color: #eee;
-	}
+	// background-color: #fff;
+    margin: 0px;
 }
 @media screen and (min-width: 500px) {
 	.article-content {
