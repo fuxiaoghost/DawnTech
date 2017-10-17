@@ -19,10 +19,12 @@ export default {
 	components: { navBar, foot },
 	data: function() {
 		return {
-			"items": [{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦", "id": "1" },
-			{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" },
-			{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" },
-			{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }],
+			"items": [{ "image": "/assets/images/photos/zhangbei/cover.jpg", "title": "张北草原", "id": "1" },
+			{ "image": "/assets/images/photos/yangzhou/cover.jpg", "title": "烟花三月下扬州" },
+			{ "image": "/assets/images/photos/wulanbutong/cover.jpg", "title": "乌兰布统" },
+			{ "image": "/assets/images/photos/samui/cover.jpg", "title": "苏梅岛" },
+            { "image": "/assets/images/photos/jiaoye/cover.jpg", "title": "郊野" },
+            { "image": "/assets/images/photos/jiankou/cover.jpg", "title": "箭扣" }],
 		}
 	},
 	created: function() {
@@ -52,6 +54,9 @@ export default {
                 display: block;
                 background-color: #ccc;
                 overflow: hidden;
+                img {
+                    width: 100%;
+                }
             }
             .image-title {
                 display: block;
