@@ -1,7 +1,8 @@
 <template>
     <div class="home">
-        <nav-bar :index="0"></nav-bar>
-        <div class="content">
+        <nav-bar :index="0">
+        </nav-bar>
+        <div class="container">
             <div class="header">
                 <div class="carousel-wrap" id="carousel">
                     <transition-group tag="ul" class='slide-ul' name="list">
@@ -19,7 +20,7 @@
             <div class="item" v-for="item in items">
                 <div class="title">{{item.title}}</div>
                 <div class="content">
-                    <a class="image-item" v-for="subitem in item.subitems" :href="`/article/${subitem.id}`" >
+                    <a class="image-item" v-for="subitem in item.subitems" :href="`/article/${subitem.id}`">
                         <span class="image-cover">
                             <img :src="subitem.image" />
                         </span>
@@ -57,10 +58,10 @@ export default {
                 "subitems": [{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦", "id": "1" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }]
             }, {
                 "title": "手记",
-                "subitems": [{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }]
+                "subitems": [{ "image": "http://bbs.qn.img-space.com/g2/M00/05/66/Cg-4klni2UmIGDAAAAuuTGig7FwAAIYjQEixA8AC65l389.jpg", "title": "手记" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }]
             }, {
                 "title": "摄影集",
-                "subitems": [{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "摄影集" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "摄影集" }]
+                "subitems": [{ "image": "http://bbs.qn.img-space.com/g2/M00/06/F0/Cg-4k1nfjpKIdKhBAAvnJtWNwyIAAKxVAM2SPsAC-c-673.jpg?imageView2/2/w/1500/q/90/ignore-error/1/", "title": "摄影集" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "摄影集" }]
             }],
             timer: ''
         }
@@ -107,10 +108,7 @@ export default {
 </script>
 <style lang="sass">
 .home {
-    text-align: center; 
-    .content {
-        width: 100%;
-        display: inline-block;
+    .container {
         .header {
             height: 332px;
             width: 100%;
@@ -151,6 +149,7 @@ export default {
                     margin: 0 3px;
                     background-color: rgba(255, 255, 255, 0.6);
                     cursor: pointer;
+                    border-radius: 3px
                 }
                 .active {
                     background-color: rgb(255, 255, 255);
@@ -177,7 +176,7 @@ export default {
                 padding-bottom: 10px;
                 font-size: 20px;
                 color: #333;
-                text-align: left; 
+                text-align: left;
                 font-weight: bold;
                 border-bottom: 1px solid #e9e9e9;
                 width: 100%;
@@ -202,10 +201,13 @@ export default {
                         display: block;
                         background-color: #ccc;
                         overflow: hidden;
+                        img {
+                            width: 100%;
+                        }
                     }
                     .image-title {
                         display: block;
-                        text-align:left;
+                        text-align: left;
                         background-color: #fff;
                         padding: 0px 20px;
                         font-size: 20px;
@@ -215,27 +217,13 @@ export default {
                         white-space: nowrap;
                     }
                 }
+                @media screen and (max-width: 500px) {
+                    .image-item {
+                        width: 100%;
+                        margin: 15px 0px 15px 0px;
+                    }
+                }
             }
-        }
-    }
-    @media screen and (max-width: 500px) {
-        .content {
-            width: 100%;
-        }
-    }
-    @media screen and (min-width: 800px) {
-        .content {
-            width: 680px;
-        }
-    }
-    @media screen and (min-width: 1024px) {
-        .content {
-            width: 1020px;
-        }
-    }
-    @media screen and (min-width: 1360px) {
-        .content {
-            width: 1360px;
         }
     }
 }

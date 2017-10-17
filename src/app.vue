@@ -42,11 +42,30 @@
             cursor: pointer;
         }
 
-    
         @media screen and (max-width: 500px) {
             .container {
                 width: 100%;
                 min-width: 100%;
+            }
+        }
+        @media screen and (max-width: 500px) {
+            .container {
+                width: 100%;
+            }
+        }
+        @media screen and (min-width: 800px) {
+            .container {
+                width: 680px;
+            }
+        }
+        @media screen and (min-width: 1024px) {
+            .container {
+                width: 1020px;
+            }
+        }
+        @media screen and (min-width: 1360px) {
+            .container {
+                width: 1360px;
             }
         }
     }
