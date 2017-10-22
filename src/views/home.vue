@@ -6,9 +6,9 @@
             <div class="header">
                 <div class="carousel-wrap" id="carousel">
                     <transition-group tag="ul" class='slide-ul' name="list">
-                        <li v-for="(list,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
-                            <a :href="list.clickUrl">
-                                <img :src="list.image" :alt="list.desc">
+                        <li v-for="(item,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
+                            <a :href="item.url">
+                                <img :src="item.url" :alt="item.desc">
                             </a>
                         </li>
                     </transition-group>
@@ -39,19 +39,7 @@ export default {
     components: { navBar, foot },
     data: function() {
         return {
-            slideList: [{
-                "clickUrl": "#",
-                "desc": "nhwc",
-                "image": "http://dummyimage.com/1745x492/f1d65b"
-            }, {
-                "clickUrl": "#",
-                "desc": "hxrj",
-                "image": "http://dummyimage.com/1745x492/40b7ea"
-            }, {
-                "clickUrl": "#",
-                "desc": "rsdh",
-                "image": "http://dummyimage.com/1745x492/e3c933"
-            }],
+            slideList: [],
             currentIndex: 0,
             items: [{
                 "title": "信手涂鸦",
@@ -83,7 +71,17 @@ export default {
                 this.timer = setInterval(() => {
                     this.autoPlay()
                 }, 4000)
-            })
+            });
+
+            this.$http.get('/api/home/cycle', {
+                params: {
+                    
+                }
+            }).then((resp) => {
+                if (resp && resp.body && resp.body.items) {
+                    this.slideList = resp.body.items;
+                }
+            });
         },
         go: function() {
             this.timer = setInterval(() => {
@@ -130,7 +128,6 @@ export default {
                     padding: 0px;
                     img {
                         width: 100%;
-                        height: 100%;
                     }
                 }
             }
@@ -147,12 +144,12 @@ export default {
                     height: 6px;
                     width: 30px;
                     margin: 0 3px;
-                    background-color: rgba(255, 255, 255, 0.6);
+                    background-color: rgba(0, 0, 0, 0.1);
                     cursor: pointer;
                     border-radius: 3px
                 }
                 .active {
-                    background-color: rgb(255, 255, 255);
+                    background-color: rgb(34, 34, 34);
                 }
             }
             .list-enter-active {

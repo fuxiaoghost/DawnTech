@@ -36,7 +36,7 @@ module.exports = {
         compress: true, 
         proxy: {
             '/api': {
-                target: 'http://prod-api-lb-100411289.cn-north-1.elb.amazonaws.com.cn',
+                target: 'http://127.0.0.1:3000',
                 //target: 'http://10.5.1.165:12800',
                 pathRewrite: {'^/api' : ''}
             }
