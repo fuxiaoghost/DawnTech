@@ -12,8 +12,8 @@
                 <span class="image-cover">
                     <img :src="photo.url" />
                 </span>
-                <span class="image-title">{{photo.title}}</span>
-                <span class="image-date">{{photo.date}}</span>
+                <span class="image-camera">{{photo.camera}}</span>
+                <span class="image-exif">{{photo.exif}}</span>
             </a>
         </div>
     </div>
@@ -73,7 +73,7 @@ export default {
             margin: 20px 0px;
             width: 100%;
             display: inline-block;
-            background-color: #eee;
+            background-color: #fff;
             transition: all 0.5s ease;
             &:hover {
                 box-shadow: #ccc 0px 6px 16px;
@@ -88,29 +88,27 @@ export default {
                     display: block;
                 }
             }
-            .image-title {
+            .image-camera {
                 display: block;
                 text-align: left;
-                background-color: #fff;
-                padding: 0px 18px;
-                font-size: 18px;
-                height: 30px;
-                line-height: 30px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #333;
-            }
-            .image-date{
-                display: block;
-                text-align: left;
-                background-color: #fff;
                 padding: 0px 18px;
                 font-size: 14px;
                 height: 30px;
                 line-height: 30px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                color: #999;
+                color: #666;
+            }
+            .image-exif {
+                display: block;
+                text-align: left;
+                padding: 0px 18px;
+                font-size: 14px;
+                height: 30px;
+                line-height: 30px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: #666;
             }
         }
     }
