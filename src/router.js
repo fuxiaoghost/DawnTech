@@ -9,7 +9,7 @@ const BLOG = resolve => require(['./views/blog.vue'], resolve);
 const PHOTOS = resolve => require(['./views/photos.vue'], resolve);
 const RESUME = resolve => require(['./views/resume.vue'], resolve);
 const ARTICLE = resolve => require(['./views/article.vue'], resolve);
-
+const PHOTO = resolve => require(['./views/photo.vue'], resolve);
 
 var router = new Router({
     mode: 'history',
@@ -22,6 +22,7 @@ var router = new Router({
         { path: '/photos', name: 'photos', component: PHOTOS},
         { path: '/resume', name: 'resume', component: RESUME},
         { path: '/article/:id', name: 'article',component: ARTICLE },
+        { path: '/photo/:category', name: 'photo',component: PHOTO },
     ]
 });
 

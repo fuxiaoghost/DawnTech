@@ -2,11 +2,12 @@
 	<div class="photos">
 		<nav-bar :index="3"></nav-bar>
 		<div class="container">
-			<a class="image-item" v-for="item in items" :href="`/article/${item.id}`">
+			<a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`">
 				<span class="image-cover">
-					<img :src="item.image" />
+					<img :src="photo.url" />
 				</span>
-				<span class="image-title">{{item.title}}</span>
+				<span class="image-title">{{photo.title}}</span>
+                <span class="image-date">{{photo.date}}</span>
 			</a>
 		</div>
 		<foot></foot>
@@ -19,19 +20,24 @@ export default {
 	components: { navBar, foot },
 	data: function() {
 		return {
-			"items": [{ "image": "/assets/images/photos/zhangbei/cover.jpg", "title": "张北草原", "id": "1" },
-			{ "image": "/assets/images/photos/yangzhou/cover.jpg", "title": "烟花三月下扬州" },
-			{ "image": "/assets/images/photos/wulanbutong/cover.jpg", "title": "乌兰布统" },
-			{ "image": "/assets/images/photos/samui/cover.jpg", "title": "苏梅岛" },
-            { "image": "/assets/images/photos/jiaoye/cover.jpg", "title": "郊野" },
-            { "image": "/assets/images/photos/jiankou/cover.jpg", "title": "箭扣" }],
+            photos: []
 		}
 	},
 	created: function() {
-
+        this.init();
 	},
 	methods: {
-
+        init:function() {
+            this.$http.get('/api/photos', {
+                params: {
+                    
+                }
+            }).then((resp) => {
+                if (resp && resp.body && resp.body.items) {
+                    this.photos = resp.body.items;
+                }
+            });
+        }
 	}
 }
 </script>
@@ -62,12 +68,25 @@ export default {
                 display: block;
                 text-align: left;
                 background-color: #fff;
-                padding: 0px 20px;
-                font-size: 20px;
-                line-height: 60px;
-                height: 60px;
+                padding: 0px 18px;
+                font-size: 18px;
+                height: 30px;
+                line-height: 30px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                color: #333;
+            }
+            .image-date{
+                display: block;
+                text-align: left;
+                background-color: #fff;
+                padding: 0px 18px;
+                font-size: 14px;
+                height: 30px;
+                line-height: 30px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: #999;
             }
         }
         @media screen and (max-width: 500px) {
