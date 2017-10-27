@@ -7,7 +7,7 @@
                 <div class="carousel-wrap" id="carousel">
                     <transition-group tag="ul" class='slide-ul' name="list">
                         <li v-for="(item,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
-                            <a :href="item.url">
+                            <a :href="item.url" :target="linkTarget">
                                 <img :src="item.url" :alt="item.desc">
                             </a>
                         </li>
@@ -18,11 +18,11 @@
                 </div>
             </div>
             <div class="item" v-for="item in items">
-                <div class="title">{{item.title}}</div>
+                <div class="title">{{item.category}}</div>
                 <div class="content">
-                    <a class="image-item" v-for="subitem in item.subitems" :href="`/article/${subitem.id}`">
+                    <a class="image-item" v-for="subitem in item.items" :href="subitem.target" :target="linkTarget">
                         <span class="image-cover">
-                            <img :src="subitem.image" />
+                            <img :src="subitem.url" />
                         </span>
                         <span class="image-title">{{subitem.title}}</span>
                     </a>
@@ -35,35 +35,24 @@
 <script>
 import navBar from '../components/nav-bar.vue';
 import foot from '../components/foot.vue';
+import adjust from '../business/adjust.js';
 export default {
     components: { navBar, foot },
     data: function() {
         return {
             slideList: [],
             currentIndex: 0,
-            items: [{
-                "title": "信手涂鸦",
-                "subitems": [{ "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦", "id": "1" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "信手涂鸦" }]
-            }, {
-                "title": "手记",
-                "subitems": [{ "image": "http://bbs.qn.img-space.com/g2/M00/05/66/Cg-4klni2UmIGDAAAAuuTGig7FwAAIYjQEixA8AC65l389.jpg", "title": "手记" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "手记" }]
-            }, {
-                "title": "摄影集",
-                "subitems": [{ "image": "http://bbs.qn.img-space.com/g2/M00/06/F0/Cg-4k1nfjpKIdKhBAAvnJtWNwyIAAKxVAM2SPsAC-c-673.jpg?imageView2/2/w/1500/q/90/ignore-error/1/", "title": "摄影集" }, { "image": "https://webimg.baichanghui.com/reecho/articles/image-filter-cover.jpg", "title": "摄影集" }]
-            }],
+            items: [],
             timer: ''
-        }
-    },
-    computed: {
-        isMobile: function() {
-            return !!navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i);
-        },
-        linkTarget: function() {
-            return this.isMobile ? '' : '_blank';
         }
     },
     created: function() {
         this.init();
+    },
+    computed: {
+        linkTarget: function() {
+            return adjust.linkTarget();
+        }
     },
     methods: {
         init: function() {
@@ -80,6 +69,14 @@ export default {
             }).then((resp) => {
                 if (resp && resp.body && resp.body.items) {
                     this.slideList = resp.body.items;
+                }
+            });
+
+            this.$http.get('/api/home/categories', {
+                params: {}
+            }).then((resp) => {
+                if (resp && resp.body && resp.body.items) {
+                    this.items = resp.body.items;
                 }
             });
         },
@@ -184,13 +181,14 @@ export default {
                 text-align: left;
                 .image-item {
                     width: 310px;
-                    height: 260px;
+                    height: 240px;
                     display: inline-block;
-                    background-color: #eee;
-                    margin: 15px;
+                    background-color: #fff;
+                    margin: 7px;
                     transition: all 0.5s ease;
+                    padding: 8px 8px 0px 8px;
                     &:hover {
-                        box-shadow: #ccc 0px 6px 16px;
+                        box-shadow: 0px 0px 10px 2px #ccc;
                     }
                     .image-cover {
                         height: 200px;
@@ -204,12 +202,11 @@ export default {
                     }
                     .image-title {
                         display: block;
-                        text-align: left;
+                        text-align: center;
                         background-color: #fff;
-                        padding: 0px 20px;
-                        font-size: 20px;
-                        line-height: 60px;
-                        height: 60px;
+                        font-size: 18px;
+                        line-height: 40px;
+                        height: 40px;
                         text-overflow: ellipsis;
                         white-space: nowrap;
                     }

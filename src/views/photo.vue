@@ -8,18 +8,18 @@
                 <span>◇</span>
                 <span>.</span>
             </div>
-            <a class="image-item" v-for="photo in photos" :href="`${photo.url}`">
+            <a class="image-item" v-for="photo in photos" :href="`${photo.url}`" :target="linkTarget">
                 <span class="image-cover">
                     <img :src="photo.url" />
-                    <span class="image-camera">{{photo.camera}}</span>
-                <span class="image-exif">{{photo.exif}}</span>
+                    <span class="image-camera" v-if="notnull(photo.camera)">{{photo.camera}}</span>
+                    <span class="image-exif" >{{photo.exif}}</span>
                 </span>
-                
             </a>
         </div>
     </div>
 </template>
 <script>
+import adjust from '../business/adjust.js';
 export default {
   data: function() {
     return {
@@ -29,6 +29,11 @@ export default {
   },
   created: function() {
     this.init();
+  },
+  computed: {
+    linkTarget: function() {
+        return adjust.linkTarget();
+    }
   },
   methods: {
     init: function() {
@@ -45,6 +50,9 @@ export default {
             console.log(this.photos);
           }
         });
+    },
+    notnull: function(s) {
+      return typeof s != "undefined" && s != null && s.length > 0;
     }
   }
 };
@@ -76,14 +84,12 @@ export default {
             display: inline-block;
             background-color: #fff;
             transition: all 0.5s ease;
-            &:hover {
-                box-shadow: #ccc 0px 6px 16px;
-            }
+            box-shadow: 0px 0px 10px 2px #ccc;
+            padding: 20px 20px 0px 20px;
             .image-cover {
                 width: 100%;
                 display: block;
                 background-color: #fff;
-                padding: 20px 20px 0px 20px;
                 img {
                     width: 100%;
                     height: 100%;
@@ -109,6 +115,13 @@ export default {
                     white-space: nowrap;
                     color: #666;
                 }
+            }
+        }
+        @media screen and (max-width: 500px) {
+            .image-item {
+                padding: 0px;
+                margin: 0px;
+                box-shadow: none;
             }
         }
     }

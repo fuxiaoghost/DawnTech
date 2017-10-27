@@ -2,7 +2,7 @@
 	<div class="photos">
 		<nav-bar :index="3"></nav-bar>
 		<div class="container">
-			<a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`">
+			<a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`" :target="linkTarget">
 				<span class="image-cover">
 					<img :src="photo.url" />
 				</span>
@@ -16,6 +16,7 @@
 <script>
 import navBar from '../components/nav-bar.vue';
 import foot from '../components/foot.vue';
+import adjust from '../business/adjust.js';
 export default {
 	components: { navBar, foot },
 	data: function() {
@@ -25,7 +26,12 @@ export default {
 	},
 	created: function() {
         this.init();
-	},
+    },
+    computed: {
+        linkTarget: function() {
+            return adjust.linkTarget();
+        }
+    },
 	methods: {
         init:function() {
             this.$http.get('/api/photos', {
@@ -48,11 +54,12 @@ export default {
             width: 310px;
             height: 260px;
             display: inline-block;
-            background-color: #eee;
-            margin: 15px;
+            background-color: #fff;
+            margin: 7px;
             transition: all 0.5s ease;
+            padding: 8px 8px 0px 8px;
             &:hover {
-                box-shadow: #ccc 0px 6px 16px;
+                box-shadow: 0px 0px 10px 2px #ccc;
             }
             .image-cover {
                 height: 200px;
@@ -68,7 +75,6 @@ export default {
                 display: block;
                 text-align: left;
                 background-color: #fff;
-                padding: 0px 18px;
                 font-size: 18px;
                 height: 30px;
                 line-height: 30px;
@@ -80,7 +86,6 @@ export default {
                 display: block;
                 text-align: left;
                 background-color: #fff;
-                padding: 0px 18px;
                 font-size: 14px;
                 height: 30px;
                 line-height: 30px;
@@ -92,7 +97,7 @@ export default {
         @media screen and (max-width: 500px) {
             .image-item {
                 width: 100%;
-                margin: 15px 0px 15px 0px;
+                margin: 0px;
             }
         }
     }
