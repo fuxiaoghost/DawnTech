@@ -168,6 +168,7 @@ export default {
             .title {
                 margin-top: 20px;
                 padding-bottom: 10px;
+                padding-left: 15px;
                 font-size: 20px;
                 color: #333;
                 text-align: left;
@@ -214,6 +215,7 @@ export default {
                 @media screen and (max-width: 500px) {
                     .image-item {
                         width: 100%;
+                        padding: 8px 0px;
                         margin: 15px 0px 15px 0px;
                     }
                 }

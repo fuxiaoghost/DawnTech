@@ -85,9 +85,9 @@ export default {
             background-color: #fff;
             transition: all 0.5s ease;
             box-shadow: 0px 0px 10px 2px #ccc;
-            padding: 20px 20px 0px 20px;
             .image-cover {
-                width: 100%;
+                padding: 20px 20px 0px 20px;
+                width: auto;
                 display: block;
                 background-color: #fff;
                 img {
@@ -122,6 +122,9 @@ export default {
                 padding: 0px;
                 margin: 0px;
                 box-shadow: none;
+                .image-cover {
+                    padding: 0px;
+                }
             }
         }
     }
