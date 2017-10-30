@@ -174,7 +174,7 @@ export default {
                 text-align: left;
                 font-weight: bold;
                 border-bottom: 1px solid #e9e9e9;
-                width: 100%;
+                width: auto;
             }
             .content {
                 margin-top: 10px;
@@ -193,7 +193,7 @@ export default {
                     }
                     .image-cover {
                         height: 200px;
-                        width: 100%;
+                        width: auto;
                         display: block;
                         background-color: #ccc;
                         overflow: hidden;
@@ -202,6 +202,7 @@ export default {
                         }
                     }
                     .image-title {
+                        width: auto;
                         display: block;
                         text-align: center;
                         background-color: #fff;
@@ -212,11 +213,17 @@ export default {
                         white-space: nowrap;
                     }
                 }
-                @media screen and (max-width: 500px) {
+            }
+            @media screen and (max-width: 500px) {
+                .title {
+                    border-bottom: none;
+                }
+                .content {
+                    margin-top: 0px;
                     .image-item {
                         width: 100%;
-                        padding: 8px 0px;
-                        margin: 15px 0px 15px 0px;
+                        padding: 0px;
+                        margin: 0px;
                     }
                 }
             }
