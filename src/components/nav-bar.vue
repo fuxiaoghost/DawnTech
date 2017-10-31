@@ -31,9 +31,6 @@ export default {
         },{
             title: '摄影集',
             url: '/photos'
-        },{
-            title: '简历',
-            url: 'resume'
         }];
 
         window.onscroll = () => {

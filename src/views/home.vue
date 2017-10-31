@@ -7,7 +7,7 @@
                 <div class="carousel-wrap" id="carousel">
                     <transition-group tag="ul" class='slide-ul' name="list">
                         <li v-for="(item,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
-                            <a :href="item.url" :target="linkTarget">
+                            <a :href="item.target" :target="linkTarget">
                                 <img :src="item.url" :alt="item.desc">
                             </a>
                         </li>
@@ -64,7 +64,7 @@ export default {
 
             this.$http.get('/api/home/cycle', {
                 params: {
-                    
+                    isMobile: adjust.isMobile
                 }
             }).then((resp) => {
                 if (resp && resp.body && resp.body.items) {
@@ -150,18 +150,22 @@ export default {
                 }
             }
             .list-enter-active {
-                transition: all 1s ease;
-                transform: translateX(0);
+                transition: all 2s ease;
+                // transform: translateX(0);
+                opacity: 1.0;
             }
             .list-leave-active {
-                transition: all 1s ease;
-                transform: translateX(-100%);
+                transition: all 2s ease;
+                // transform: translateX(-100%);
+                opacity: 0.0;
             }
             .list-enter {
-                transform: translateX(100%);
+                // transform: translateX(100%);
+                opacity: 0.0;
             }
             .list-leave {
-                transform: translateX(0);
+                // transform: translateX(0);
+                opacity: 1.0;
             }
         }
         .item {
@@ -225,6 +229,14 @@ export default {
                         padding: 0px;
                         margin: 0px;
                     }
+                }
+            }
+        }
+        @media screen and (max-width: 500px) {
+            .header {
+                height: 250px;
+                .carousel-items {
+                    top: 230px;
                 }
             }
         }
