@@ -10,41 +10,70 @@
     </div>
 </template>
 <script>
+import adjust from "../business/adjust.js";
 export default {
-    props: ['index'],
-    data: function() {
-        return {
-            navs: [],
-            navClass: ''
+  props: ["index"],
+  data: function() {
+    return {
+      navs: [],
+      navClass: ""
+    };
+  },
+  created: function() {
+    if (adjust.isMobile()) {
+      this.navs = [
+        {
+          title: "随笔",
+          url: "/blog"
+        },
+        {
+          title: "信手涂鸦",
+          url: "/knbrush"
+        },
+        {
+          title: "手记",
+          url: "/note"
+        },
+        {
+          title: "摄影集",
+          url: "/photos"
         }
-    },
-    created: function() {
-        this.navs = [{
-            title: '主页',
-            url: '/'
-        }, {
-            title: '信手涂鸦',
-            url: '/knbrush'
-        },{
-            title: '手记',
-            url: '/note'
-        },{
-            title: '摄影集',
-            url: '/photos'
-        }];
-
-        window.onscroll = () => {
-            if (window.scrollY > 160) {
-                this.navClass = 'light';
-            } else {
-                this.navClass = '';
-            }
+      ];
+    } else {
+      this.navs = [
+        {
+          title: "主页",
+          url: "/"
+        },
+        {
+          title: "随笔",
+          url: "/blog"
+        },
+        {
+          title: "信手涂鸦",
+          url: "/knbrush"
+        },
+        {
+          title: "手记",
+          url: "/note"
+        },
+        {
+          title: "摄影集",
+          url: "/photos"
         }
-    },
-    methods: {
-
+      ];
     }
-}
+
+    window.onscroll = () => {
+      if (window.scrollY > 160) {
+        this.navClass = "light";
+      } else {
+        this.navClass = "";
+      }
+    };
+  },
+  methods: {}
+};
 </script>
 <style lang="sass">
     .nav-bar {

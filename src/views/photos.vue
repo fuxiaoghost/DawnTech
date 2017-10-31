@@ -2,102 +2,111 @@
 	<div class="photos">
 		<nav-bar :index="3"></nav-bar>
 		<div class="container">
-			<a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`" :target="linkTarget">
+            <div class="work">
+                <a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`" :target="linkTarget">
 				<span class="image-cover">
-					<img :src="photo.url" />
+					<img v-lazy="photo.url" />
 				</span>
 				<span class="image-title">{{photo.title}}</span>
                 <span class="image-date">{{photo.date}}</span>
 			</a>
+            </div>
 		</div>
 		<foot></foot>
 	</div>
 </template>
 <script>
-import navBar from '../components/nav-bar.vue';
-import foot from '../components/foot.vue';
-import adjust from '../business/adjust.js';
+import navBar from "../components/nav-bar.vue";
+import foot from "../components/foot.vue";
+import adjust from "../business/adjust.js";
 export default {
-	components: { navBar, foot },
-	data: function() {
-		return {
-            photos: []
-		}
-	},
-	created: function() {
-        this.init();
-    },
-    computed: {
-        linkTarget: function() {
-            return adjust.linkTarget();
-        }
-    },
-	methods: {
-        init:function() {
-            this.$http.get('/api/photos', {
-                params: {
-                    
-                }
-            }).then((resp) => {
-                if (resp && resp.body && resp.body.items) {
-                    this.photos = resp.body.items;
-                }
-            });
-        }
-	}
-}
+  components: { navBar, foot },
+  data: function() {
+    return {
+      photos: []
+    };
+  },
+  created: function() {
+    this.init();
+  },
+  computed: {
+    linkTarget: function() {
+      return adjust.linkTarget();
+    }
+  },
+  methods: {
+    init: function() {
+      this.$http
+        .get("/api/photos", {
+          params: {}
+        })
+        .then(resp => {
+          if (resp && resp.body && resp.body.items) {
+            this.photos = resp.body.items;
+          }
+        });
+    }
+  }
+};
 </script>
 <style lang="sass">
 .photos {
     .container {
-        .image-item {
-            width: 310px;
-            height: 260px;
-            display: inline-block;
-            background-color: #fff;
-            margin: 7px;
-            transition: all 0.5s ease;
-            padding: 8px 8px 0px 8px;
-            &:hover {
-                box-shadow: 0px 0px 10px 2px #ccc;
-            }
-            .image-cover {
-                height: 200px;
-                width: 100%;
-                display: block;
-                background-color: #ccc;
-                overflow: hidden;
-                img {
-                    width: 100%;
+        .work {
+            margin: 40px 0px;
+            .image-item {
+                width: 310px;
+                height: 260px;
+                display: inline-block;
+                background-color: #fff;
+                margin: 7px;
+                transition: all 0.5s ease;
+                padding: 8px 8px 0px 8px;
+                &:hover {
+                    box-shadow: 0px 0px 10px 2px #ccc;
                 }
-            }
-            .image-title {
-                display: block;
-                text-align: left;
-                background-color: #fff;
-                font-size: 18px;
-                height: 30px;
-                line-height: 30px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #333;
-            }
-            .image-date{
-                display: block;
-                text-align: left;
-                background-color: #fff;
-                font-size: 14px;
-                height: 30px;
-                line-height: 30px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #999;
+                .image-cover {
+                    height: 200px;
+                    width: 100%;
+                    display: block;
+                    background-color: #ccc;
+                    overflow: hidden;
+                    img {
+                        width: 100%;
+                    }
+                }
+                .image-title {
+                    display: block;
+                    text-align: left;
+                    background-color: #fff;
+                    font-size: 18px;
+                    height: 30px;
+                    line-height: 30px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    color: #333;
+                }
+                .image-date {
+                    display: block;
+                    text-align: left;
+                    background-color: #fff;
+                    font-size: 14px;
+                    height: 30px;
+                    line-height: 30px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    color: #999;
+                }
             }
         }
         @media screen and (max-width: 500px) {
-            .image-item {
-                width: 100%;
-                margin: 0px;
+            .work {
+                margin: 12px 0px 0px 0px;
+                .image-item {
+                    width: auto;
+                    padding: 0px 12px 0px 12px;
+                    margin: 0px;
+                }
             }
         }
     }

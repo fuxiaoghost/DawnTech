@@ -64,7 +64,7 @@ export default {
 
             this.$http.get('/api/home/cycle', {
                 params: {
-                    isMobile: adjust.isMobile
+                    isMobile: adjust.isMobile()
                 }
             }).then((resp) => {
                 if (resp && resp.body && resp.body.items) {

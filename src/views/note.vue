@@ -207,11 +207,14 @@ export default {
                 }
             }
             .works {
+                padding-bottom: 12px;
                 .image-item {
-                    margin: 20px 0px;
+                    width: auto;
+                    margin: 0px;
+                    display: block;
                     box-shadow: none;
                     .image-cover {
-                        padding: 0px;
+                        padding: 12px 12px 0px 12px;
                     }
                 }
             }

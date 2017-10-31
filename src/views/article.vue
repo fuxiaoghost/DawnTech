@@ -21,11 +21,12 @@ export default {
 		}
 	},
 	created: function () {
-		this.convert(this.$route.params.id);
+		this.convert(this.$route.query.id);
 	},
 	methods: {
 		convert: function (aid) {
-			md2html.convertSrc('/assets/data/' + aid + '.markdown', (err, result) => {
+			console.log(aid);
+			md2html.convertSrc(aid, (err, result) => {
 				this.htmlContent = result;
 			});
 		}

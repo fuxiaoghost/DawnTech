@@ -10,7 +10,7 @@
             </div>
             <a class="image-item" v-for="photo in photos" :href="`${photo.url}`" :target="linkTarget">
                 <span class="image-cover">
-                    <img :src="photo.url" />
+                    <img v-lazy="photo.url" />
                     <span class="image-camera" v-if="notnull(photo.camera)">{{photo.camera}}</span>
                     <span class="image-exif" >{{photo.exif}}</span>
                 </span>
@@ -119,7 +119,8 @@ export default {
         }
         @media screen and (max-width: 500px) {
             .image-item {
-                padding: 0px;
+                width: auto;
+                padding: 0px 12px 0px 12px;
                 margin: 0px;
                 box-shadow: none;
                 .image-cover {

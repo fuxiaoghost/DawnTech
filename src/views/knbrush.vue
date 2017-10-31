@@ -79,6 +79,7 @@ export default {
 </script>
 <style lang="sass">
     .text {
+        background-color: #fff;
         .name {
             padding: 0px 18px;
             height: 40px;
@@ -178,26 +179,28 @@ export default {
                 }
             }
         }
-        .image-item {
-            margin: 20px 0px;
-            width: 100%;
-            display: inline-block;
-            background-color: #fff;
-            transition: all 0.5s ease;
-            box-shadow: 0px 0px 10px 2px #ccc;
-            .image-cover {
-                padding: 20px 20px 20px 20px;
-                width: auto;
-                display: block;
+        .works {
+            padding-bottom: 40px;
+            .image-item {
+                margin: 20px 0px;
+                width: 100%;
+                display: inline-block;
                 background-color: #fff;
-                img {
-                    width: 100%;
-                    height: 100%;
+                transition: all 0.5s ease;
+                box-shadow: 0px 0px 10px 2px #ccc;
+                .image-cover {
+                    padding: 20px 20px 20px 20px;
+                    width: auto;
                     display: block;
+                    background-color: #fff;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        display: block;
+                    }
                 }
             }
         }
-        
         
         @media screen and (max-width: 500px) {
             .preview {
@@ -212,11 +215,14 @@ export default {
                 }
             }
             .works {
+                padding-bottom: 12px;
                 .image-item {
-                    margin: 20px 0px;
+                    width: auto;
+                    display: block;
+                    margin: 0px;
                     box-shadow: none;
                     .image-cover {
-                        padding: 0px;
+                        padding: 12px 12px 0px 12px;
                     }
                 }
             }
