@@ -57,7 +57,6 @@ export default {
     font-size: 20px;
     height: 40px;
     line-height: 40px;
-    // font-weight: bold;
     color: #333;
   }
   .desc {
@@ -65,7 +64,7 @@ export default {
     padding: 0px 18px;
     font-size: 14px;
     line-height: 24px;
-    color: #333;
+    color: #666;
   }
 }
 </style>

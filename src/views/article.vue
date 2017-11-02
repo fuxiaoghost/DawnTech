@@ -8,35 +8,64 @@
 	</div>
 </template>
 <script>
-import md2html from '../business/md2html.js';
-import navBar from '../components/nav-bar.vue';
-import foot from '../components/foot.vue';
+import md2html from "../business/md2html.js";
+import navBar from "../components/nav-bar.vue";
+import foot from "../components/foot.vue";
 export default {
-	components: { navBar, foot },
-	data: function () {
-		return {
-			articles: [],
-			article: {},
-			htmlContent: ''
-		}
-	},
-	created: function () {
-		this.convert(this.$route.query.id);
-	},
-	methods: {
-		convert: function (aid) {
-			console.log(aid);
-			md2html.convertSrc(aid, (err, result) => {
-				this.htmlContent = result;
-			});
-		}
-	}
-}
+  components: { navBar, foot },
+  data: function() {
+    return {
+      articles: [],
+      article: {},
+      htmlContent: ""
+    };
+  },
+  created: function() {
+    this.convert(this.$route.query.id);
+  },
+  methods: {
+    convert: function(aid) {
+      console.log(aid);
+      md2html.convertSrc(aid, (err, result) => {
+        this.htmlContent = result;
+      });
+    }
+  }
+};
 </script>
 <style lang="sass">
-.article {
+.article-content {
 	// background-color: #fff;
     margin: 0px;
+		blockquote {
+			-webkit-margin-before: 0px;
+    	-webkit-margin-after: 0px;
+    	-webkit-margin-start: 0px;
+    	-webkit-margin-end: 0px;
+			border-left: 2px solid #298cda;
+			padding: 10px 10px;
+			margin-left: 20px;
+			background-color: #efefef;
+			p {
+				-webkit-margin-before: 0px;
+				-webkit-margin-after: 0px;
+				-webkit-margin-start: 0px;
+				-webkit-margin-end: 0px;
+			}
+		}
+		a {
+			color: #298cda;
+			&:hover {
+				text-decoration: underline;
+			}
+      &:after {
+				display: inline-block;
+				content: '';
+				width: 12px;
+				height: 12px;
+				background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=) center right no-repeat;
+			}
+		}
 }
 @media screen and (min-width: 500px) {
 	.article-content {
@@ -64,7 +93,7 @@ export default {
 @media screen and (max-width: 500px) {
 	.article-content {
 		padding: 0 16px;
-		font-size: 16px;
+		font-size: 14px;
 		word-break: break-all;
 		img {
 			width: 100%;
@@ -90,19 +119,25 @@ export default {
 Railscasts-like style (c) Visoft, Inc. (Damien White)
 
 */
-
+code {
+			background: #efefef;
+			font-style: italic;
+			font-size: 14px;
+			padding: 4px 10px;
+		}
 .hljs {
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: #232323;
+  background: #232323 !important;
   color: #e6e1dc;
+	font-style: normal !important;
 }
 
 .hljs-comment,
 .hljs-quote {
   color: #bc9458;
-  font-style: italic;
+  font-style: italic !important;
 }
 
 .hljs-keyword,
