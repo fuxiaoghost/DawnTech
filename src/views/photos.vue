@@ -1,6 +1,6 @@
 <template>
 	<div class="photos">
-		<nav-bar :index="3"></nav-bar>
+		<nav-bar :index="index"></nav-bar>
 		<div class="container">
             <div class="work">
                 <a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`" :target="linkTarget">
@@ -32,6 +32,13 @@ export default {
   computed: {
     linkTarget: function() {
       return adjust.linkTarget();
+    },
+    index: function() {
+      if (adjust.isMobile()) {
+        return 3;
+      }else {
+        return 4;
+      }
     }
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
     <div class="knbrush">
-        <nav-bar :index="1"></nav-bar>
+        <nav-bar :index="index"></nav-bar>
         <div class="container">
             <div class="text">
                 <a class="name" href='https://itunes.apple.com/cn/app/freehand-sketch-draw-note-doodle-masters/id1105305111?l=cn&mt=8'>信手涂鸦 - 素描.涂色.P图.手绘大师</a>
@@ -54,6 +54,13 @@ export default {
     },
     linkTarget: function() {
       return adjust.linkTarget();
+    },
+    index: function() {
+      if (adjust.isMobile()) {
+        return 1;
+      }else {
+        return 2;
+      }
     }
   },
   created: function() {

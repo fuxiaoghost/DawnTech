@@ -35,7 +35,7 @@ export default {
 </script>
 <style lang="sass">
 .article-content {
-	// background-color: #fff;
+		min-height: 800px;
     margin: 0px;
 		blockquote {
 			-webkit-margin-before: 0px;

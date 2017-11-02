@@ -1,6 +1,6 @@
 <template>
     <div class="note">
-        <nav-bar :index="2"></nav-bar>
+        <nav-bar :index="index"></nav-bar>
         <div class="container">
             <div class="text">
                 <a class="name" href='https://itunes.apple.com/cn/app/id1247102147'>手记</a>
@@ -50,6 +50,13 @@ export default {
     },
     linkTarget: function() {
       return adjust.linkTarget();
+    },
+    index: function() {
+      if (adjust.isMobile()) {
+        return 2;
+      }else {
+        return 3;
+      }
     }
   },
   created: function() {

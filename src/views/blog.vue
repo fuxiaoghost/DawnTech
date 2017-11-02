@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <nav-bar :index="0"></nav-bar>
+        <nav-bar :index="index"></nav-bar>
         <div class="container">
           <a class="blog" v-for="item in items" :href="`/article?id=${encodeURI(item.target)}`">
             <span class="title">{{ item.title }}</span>
@@ -24,6 +24,13 @@ export default {
   computed: {
     linkTarget: function() {
       return adjust.linkTarget();
+    },
+    index: function() {
+      if (adjust.isMobile()) {
+        return 0;
+      }else {
+        return 1;
+      }
     }
   },
   created: function() {
