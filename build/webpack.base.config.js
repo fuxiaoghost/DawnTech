@@ -35,7 +35,8 @@ module.exports = {
         compress: true, 
         proxy: {
             '/api': {
-                target: 'http://127.0.0.1:3000',
+                //target: 'http://127.0.0.1:3000',
+                target: 'http://api.dawntech.top:3000',
                 //target: 'http://10.5.1.165:12800',
                 pathRewrite: {'^/api' : ''}
             }

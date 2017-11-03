@@ -8,7 +8,7 @@
                     <transition-group tag="ul" class='slide-ul' name="list">
                         <li v-for="(item,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
                             <a :href="item.target" :target="linkTarget">
-                                <img :src="item.url" :alt="item.desc">
+                                <img v-lazy="item.url" :alt="item.desc">
                             </a>
                         </li>
                     </transition-group>
@@ -22,7 +22,7 @@
                 <div class="content">
                     <a class="image-item" v-for="subitem in item.items" :href="subitem.target" :target="linkTarget">
                         <span class="image-cover">
-                            <img :src="subitem.url" />
+                            <img v-lazy="subitem.url" />
                         </span>
                         <span class="image-title">{{subitem.title}}</span>
                     </a>

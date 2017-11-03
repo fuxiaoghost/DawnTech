@@ -13,7 +13,7 @@
                 <div class="preview">
                     <div v-for="item in previews" class="item">
                         <a class="boarder" :href="item" :target="linkTarget">
-                            <img :src="item" alt="">
+                            <img v-lazy="item" alt="">
                         </a>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                 <div class="works">
                     <a class="image-item" v-for="item in works" :href="item" :target="linkTarget">
                         <span class="image-cover">
-                            <img :src="item" />
+                            <img v-lazy="item" />
                         </span>
                     </a>
                 </div>

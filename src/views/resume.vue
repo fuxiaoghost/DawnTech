@@ -17,7 +17,7 @@
                 v-if="!item.hidden"
                 v-for="item in articles">
                 <span class="article-cover">
-                    <img :src="item.cover" />
+                    <img v-lazy="item.cover" />
                 </span>
                 <span class="article-info">
                     <span class="title">{{item.title}}</span>
