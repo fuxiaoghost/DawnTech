@@ -199,7 +199,6 @@ export default {
                         height: 200px;
                         width: auto;
                         display: block;
-                        background-color: #ccc;
                         overflow: hidden;
                         img {
                             width: 100%;
