@@ -1,6 +1,5 @@
 <template>
 	<div class="article">
-		<nav-bar></nav-bar>
 		<div class="container">
 			<div class="article-content" v-html="htmlContent"></div>
 		</div>

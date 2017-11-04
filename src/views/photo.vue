@@ -16,12 +16,15 @@
                 </span>
             </a>
         </div>
+        <foot></foot>
     </div>
 </template>
 <script>
 import adjust from '../business/adjust.js';
+import foot from "../components/foot.vue";
 export default {
-  data: function() {
+    components: {foot},
+    data: function() {
     return {
       photos: [],
       title: ""
