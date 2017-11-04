@@ -56,9 +56,10 @@ export default {
 .blog {
     background-color: #fff;
     border-bottom:0.5px solid  #e8e8e8;
-    width: 100%;
+    width: auto;
     padding: 10px 0px;
     display: block;
+    
     .title {
         display: block;
         font-size: 20px;
@@ -77,6 +78,9 @@ export default {
         font-size: 12px;
         line-height: 24px;
         color: #999;
-  }
+    }
+    @media screen and (max-width: 500px){
+        padding: 10px 18px;
+    }
 }
 </style>

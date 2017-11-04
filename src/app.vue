@@ -4,9 +4,9 @@
     </div>
 </template>
 <script>
-    export default {
-        components: {}
-    }
+export default {
+  components: {}
+};
 </script>
 <style lang="sass">
     html {
@@ -22,7 +22,29 @@
             -webkit-font-smoothing: antialiased;
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
+            -webkit-touch-callout: none;
+            /*去除 ios safari <a>以及 <input> 选中时高亮显示，去除高亮后我们可以自定义样式*/
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-user-select: none;  
         }
+        a, a:link {
+            -webkit-appearance: none;
+            text-decoration: none;
+            color: #333;
+            cursor: pointer;
+        }
+    }
+    .router-before {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 70px;
+        min-height: 400px;
+        background-color: #fff;
+        height: 100%;
+    }
+
+    .router-after {
+        background-image: none;
     }
     .page {
         height: 100%;
@@ -32,14 +54,6 @@
             min-width: 1024px;
             position: relative;
             margin: 0 auto;
-        }
-    
-        a,
-        a:link {
-            -webkit-appearance: none;
-            text-decoration: none;
-            color: #333;
-            cursor: pointer;
         }
 
         @media screen and (max-width: 500px) {

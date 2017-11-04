@@ -4,12 +4,12 @@
 		<div class="container">
             <div class="work">
                 <a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`" :target="linkTarget">
-				    <span class="image-cover">
-					    <img v-lazy="photo.url" />
-				    </span>
-				    <span class="image-title">{{photo.title}}</span>
+				        <span class="image-cover">
+					        <img v-lazy="photo.url" />
+				        </span>
+				        <span class="image-title">{{photo.title}}</span>
                     <span class="image-date">{{photo.date}}</span>
-			    </a>
+			     </a>
             </div>
 		</div>
 		<foot></foot>
@@ -76,7 +76,7 @@ export default {
                     height: 200px;
                     width: 100%;
                     display: block;
-                    background-color: #ccc;
+                    background-color: #fff;
                     overflow: hidden;
                     img {
                         width: 100%;
@@ -112,9 +112,16 @@ export default {
                 width: 100%;
                 .image-item {
                     width: auto;
-                    display: block;
+                    height: auto;
                     padding: 0px 12px 0px 12px;
                     margin: 0px;
+                    display: block;
+                    .image-cover {
+                        height: auto;
+                    }
+                    &:hover {
+                        box-shadow: none;
+                    }
                 }
             }
         }

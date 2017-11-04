@@ -99,13 +99,6 @@ export default {
             &:hover {
                 text-decoration: underline;
             }
-            &:after {
-                display: inline-block;
-                content: '';
-                width: 12px;
-                height: 20px;
-                background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=) center right no-repeat;
-            }
         }
         .subname {
             padding: 0px 18px;
@@ -115,13 +108,6 @@ export default {
             color: #298cda;
             &:hover {
                 text-decoration: underline;
-            }
-            &:after {
-                display: inline-block;
-                content: '';
-                width: 12px;
-                height: 10px;
-                background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=) center right no-repeat;
             }
         }
         .qrcode {
@@ -170,6 +156,7 @@ export default {
             white-space: nowrap;
             overflow: hidden;
             overflow-x: scroll;
+            -webkit-overflow-scrolling: touch;
             text-align: justify;
             .item {
                 width: 400px;
@@ -213,8 +200,8 @@ export default {
                 padding: 0px !important;
                 margin-top: 10px;
                 .item {
-                    padding: 5px 0px;
-                    width: 100%;
+                    padding: 5px 10px;
+                    width: 80%;
                     .boarder {
                         padding: 0px;
                     }

@@ -54,16 +54,9 @@ export default {
 			}
 		}
 		a {
-			color: #298cda;
+			color: #298cda !important;
 			&:hover {
 				text-decoration: underline;
-			}
-      &:after {
-				display: inline-block;
-				content: '';
-				width: 12px;
-				height: 12px;
-				background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=) center right no-repeat;
 			}
 		}
 }
