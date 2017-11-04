@@ -35,9 +35,9 @@ export default {
     },
     index: function() {
       if (adjust.isMobile()) {
-        return 3;
+        return 1;
       } else {
-        return 4;
+        return 2;
       }
     }
   },
