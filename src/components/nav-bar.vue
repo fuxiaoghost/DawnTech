@@ -1,5 +1,5 @@
 <template>
-    <div class="nav-bar" :class="navClass">
+    <div class="nav-bar">
         <div class="container">
             <div class="nav-right">
                 <a class="nav-item" :class="{'active':index==idx}" v-for="(item, idx) in navs" :href="item.url">
@@ -15,8 +15,7 @@ export default {
   props: ["index"],
   data: function() {
     return {
-      navs: [],
-      navClass: ""
+      navs: []
     };
   },
   created: function() {
@@ -65,11 +64,11 @@ export default {
     }
 
     window.onscroll = () => {
-      if (window.scrollY > 160) {
-        this.navClass = "light";
-      } else {
-        this.navClass = "";
-      }
+    //   if (window.scrollY > 160) {
+    //     this.navClass = "light";
+    //   } else {
+    //     this.navClass = "";
+    //   }
     };
   },
   methods: {}
@@ -79,34 +78,13 @@ export default {
     .nav-bar {
         height: 60px;
         line-height: 60px;
-        background-color: #333;
+        background-color: #24292e;
         color: #fff;
-        position: fixed;
+        position: absolute;
         width: 100%;
         z-index: 100;
         top:0;
         transition: all 1s ease;
-        &.light {
-            background-color: #fff;
-            color: #000;
-            opacity: .95;
-            border-bottom: 1px solid #f2f2f2;
-            .brand {
-                color: #000;
-            }
-            .nav-item {
-                color: #000 !important;
-                &:after {
-                    background-color: #fff;
-                }
-
-                &.active,&:hover {
-                    &:after {
-                        background-color: #000;
-                    }
-                }
-            }
-        }
         .nav-left {
             float: left;
             margin-left: 20px;
@@ -117,7 +95,9 @@ export default {
             padding: 0 20px;
             text-align: center;
             position: relative;
-            color: #fff !important;
+            font-size: 16px;
+            font-weight: bold;
+            color: rgba(255,255,255,0.75) !important;
             &:after {
                 content: '';
                 position: absolute;
@@ -128,11 +108,17 @@ export default {
                 background-color: #000;
                 transition: all 0.5s ease;
             }
-
             &.active,&:hover {
                 &:after {
                     background-color: #fff;
                 }
+                color: rgba(255,255,255,1.0) !important;
+            }
+        }
+        @media screen and (max-width: 500px) {
+            .nav-item {
+                padding: 0px;
+                width: 25%;
             }
         }
     }

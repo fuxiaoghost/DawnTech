@@ -2,10 +2,11 @@
     <div class="home">
         <nav-bar :index="index"></nav-bar>
         <div class="container">
-          <a class="blog" v-for="item in items" :href="`/article?id=${encodeURI(item.target)}`">
-            <span class="title">{{ item.title }}</span>
-            <span class="desc">{{ item.desc }}</span>
-          </a>
+            <a class="blog" v-for="item in items" :href="`/article?id=${encodeURI(item.target)}`">
+                <span class="title">{{ item.title }}</span>
+                <span class="desc">{{ item.desc }}</span>
+                <span class="date">发布于 {{ item.date }}</span>
+            </a>
         </div>
         <foot></foot>
     </div>
@@ -28,7 +29,7 @@ export default {
     index: function() {
       if (adjust.isMobile()) {
         return 0;
-      }else {
+      } else {
         return 1;
       }
     }
@@ -53,25 +54,29 @@ export default {
 </script>
 <style lang="sass">
 .blog {
-  background-color: #fff;
-  border-bottom:0.5px solid  #e8e8e8;
-  width: 100%;
-  padding: 10px 0px;
-  display: block;
-  .title {
+    background-color: #fff;
+    border-bottom:0.5px solid  #e8e8e8;
+    width: 100%;
+    padding: 10px 0px;
     display: block;
-    padding: 0px 18px;
-    font-size: 20px;
-    height: 40px;
-    line-height: 40px;
-    color: #333;
-  }
-  .desc {
-    display: block;
-    padding: 0px 18px;
-    font-size: 14px;
-    line-height: 24px;
-    color: #666;
+    .title {
+        display: block;
+        font-size: 20px;
+        height: 40px;
+        line-height: 40px;
+        color: #333;
+    }
+    .desc {
+        display: block;
+        font-size: 14px;
+        line-height: 24px;
+        color: #666;
+    }
+    .date {
+        display: block;
+        font-size: 12px;
+        line-height: 24px;
+        color: #999;
   }
 }
 </style>

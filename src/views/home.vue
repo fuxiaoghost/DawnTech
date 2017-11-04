@@ -33,73 +33,77 @@
     </div>
 </template>
 <script>
-import navBar from '../components/nav-bar.vue';
-import foot from '../components/foot.vue';
-import adjust from '../business/adjust.js';
+import navBar from "../components/nav-bar.vue";
+import foot from "../components/foot.vue";
+import adjust from "../business/adjust.js";
 export default {
-    components: { navBar, foot },
-    data: function() {
-        return {
-            slideList: [],
-            currentIndex: 0,
-            items: [],
-            timer: ''
-        }
-    },
-    created: function() {
-        this.init();
-    },
-    computed: {
-        linkTarget: function() {
-            return adjust.linkTarget();
-        }
-    },
-    methods: {
-        init: function() {
-            this.$nextTick(() => {
-                this.timer = setInterval(() => {
-                    this.autoPlay()
-                }, 4000)
-            });
-
-            this.$http.get('/api/home/cycle', {
-                params: {
-                    isMobile: adjust.isMobile()
-                }
-            }).then((resp) => {
-                if (resp && resp.body && resp.body.items) {
-                    this.slideList = resp.body.items;
-                }
-            });
-
-            this.$http.get('/api/home/categories', {
-                params: {}
-            }).then((resp) => {
-                if (resp && resp.body && resp.body.items) {
-                    this.items = resp.body.items;
-                }
-            });
-        },
-        go: function() {
-            this.timer = setInterval(() => {
-                this.autoPlay()
-            }, 4000)
-        },
-        stop: function() {
-            clearInterval(this.timer)
-            this.timer = null
-        },
-        change: function(index) {
-            this.currentIndex = index
-        },
-        autoPlay: function() {
-            this.currentIndex++
-            if (this.currentIndex > this.slideList.length - 1) {
-                this.currentIndex = 0
-            }
-        }
+  components: { navBar, foot },
+  data: function() {
+    return {
+      slideList: [],
+      currentIndex: 0,
+      items: [],
+      timer: ""
+    };
+  },
+  created: function() {
+    this.init();
+  },
+  computed: {
+    linkTarget: function() {
+      return adjust.linkTarget();
     }
-}
+  },
+  methods: {
+    init: function() {
+      this.$nextTick(() => {
+        this.timer = setInterval(() => {
+          this.autoPlay();
+        }, 4000);
+      });
+
+      this.$http
+        .get("/api/home/cycle", {
+          params: {
+            isMobile: adjust.isMobile()
+          }
+        })
+        .then(resp => {
+          if (resp && resp.body && resp.body.items) {
+            this.slideList = resp.body.items;
+          }
+        });
+
+      this.$http
+        .get("/api/home/categories", {
+          params: {}
+        })
+        .then(resp => {
+          if (resp && resp.body && resp.body.items) {
+            this.items = resp.body.items;
+          }
+        });
+    },
+    go: function() {
+      this.timer = setInterval(() => {
+        this.autoPlay();
+      }, 4000);
+    },
+    stop: function() {
+      clearInterval(this.timer);
+      this.timer = null;
+    },
+    change: function(index) {
+      this.currentIndex = index;
+    },
+    autoPlay: function() {
+      this.currentIndex++;
+      if (this.currentIndex > this.slideList.length - 1) {
+        this.currentIndex = 0;
+      }
+    }
+  }
+};
 </script>
 <style lang="sass">
 .home {

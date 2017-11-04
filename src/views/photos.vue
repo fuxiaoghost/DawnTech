@@ -4,12 +4,12 @@
 		<div class="container">
             <div class="work">
                 <a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`" :target="linkTarget">
-				<span class="image-cover">
-					<img v-lazy="photo.url" />
-				</span>
-				<span class="image-title">{{photo.title}}</span>
-                <span class="image-date">{{photo.date}}</span>
-			</a>
+				    <span class="image-cover">
+					    <img v-lazy="photo.url" />
+				    </span>
+				    <span class="image-title">{{photo.title}}</span>
+                    <span class="image-date">{{photo.date}}</span>
+			    </a>
             </div>
 		</div>
 		<foot></foot>
@@ -36,7 +36,7 @@ export default {
     index: function() {
       if (adjust.isMobile()) {
         return 3;
-      }else {
+      } else {
         return 4;
       }
     }
@@ -109,8 +109,10 @@ export default {
         @media screen and (max-width: 500px) {
             .work {
                 margin: 12px 0px 0px 0px;
+                width: 100%;
                 .image-item {
                     width: auto;
+                    display: block;
                     padding: 0px 12px 0px 12px;
                     margin: 0px;
                 }

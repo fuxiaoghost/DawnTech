@@ -169,8 +169,8 @@ export default {
             overflow-x:auto;
             white-space: nowrap;
             overflow: hidden;
-            overflow-x: scroll; /* 1 */
-            text-align: justify; /* 3 */
+            overflow-x: scroll;
+            text-align: justify;
             .item {
                 width: 400px;
                 padding: 5px 30px 0px 0px;
@@ -179,7 +179,6 @@ export default {
                     background-color: #fff;
                     width: 100%;
                     display: block;
-                    padding: 10px;
                     img {
                         width: 100%;
                     }
