@@ -10,24 +10,35 @@
 import md2html from "../business/md2html.js";
 import navBar from "../components/nav-bar.vue";
 import foot from "../components/foot.vue";
+import weixin from '../business/weixin';
 export default {
   components: { navBar, foot },
   data: function() {
     return {
-      articles: [],
-      article: {},
-      htmlContent: ""
+      htmlContent: "",
+      title: "",
+      desc: ""
     };
   },
   created: function() {
-    this.convert(this.$route.query.id);
+    this.convert(this.$route.params.id);
   },
   methods: {
-    convert: function(aid) {
-      console.log(aid);
-      md2html.convertSrc(aid, (err, result) => {
-        this.htmlContent = result;
-      });
+    convert: function(id) {
+      this.$http
+        .get("/api/blog/" + id, {
+          params: {}
+        })
+        .then(resp => {
+          if (resp && resp.body && resp.body.id) {
+            md2html.convertSrc(resp.body.target, (err, result) => {
+              this.htmlContent = result;
+            });
+            this.title = resp.body.title;
+            this.desc = resp.body.desc;
+            weixin.wxShare(this.title, this.desc,'http://dawntech.top/assets/images/favicon.jpg', this.$http);
+          }
+        });
     }
   }
 };

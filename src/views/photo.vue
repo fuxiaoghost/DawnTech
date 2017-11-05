@@ -22,6 +22,7 @@
 <script>
 import adjust from '../business/adjust.js';
 import foot from "../components/foot.vue";
+import weixin from '../business/weixin';
 export default {
     components: {foot},
     data: function() {
@@ -41,8 +42,6 @@ export default {
   methods: {
     init: function() {
       var category = this.$route.params.category;
-      this.title = this.$route.query.title;
-
       this.$http
         .get("/api/photo/" + category, {
           params: {}
@@ -50,7 +49,9 @@ export default {
         .then(resp => {
           if (resp && resp.body && resp.body.items) {
             this.photos = resp.body.items;
-            console.log(this.photos);
+            this.title = resp.body.title;
+            var photo = photos[0];
+            weixin.wxShare(this.title, '',photo.url, this.$http);
           }
         });
     },

@@ -38,6 +38,7 @@
 import navBar from "../components/nav-bar.vue";
 import foot from "../components/foot.vue";
 import adjust from "../business/adjust.js";
+import weixin from '../business/weixin';
 export default {
   components: { navBar, foot },
   data: function() {
@@ -65,6 +66,7 @@ export default {
   },
   created: function() {
     this.init();
+    weixin.wxShare('信手涂鸦 - 素描.涂色.P图.手绘大师', '这是一款适合所有用户的非常高效的绘画工具，快速打开，易学易用。虽然采用了简约的设计手法但是软件仍然可以提供丰富的功能','http://dawntech.top/assets/images/knbrush.png', this.$http);
   },
   methods: {
     init: function() {

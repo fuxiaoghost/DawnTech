@@ -2,7 +2,7 @@
     <div class="home">
         <nav-bar :index="index"></nav-bar>
         <div class="container">
-            <a class="blog" v-for="item in items" :href="`/article?id=${encodeURI(item.target)}`">
+            <a class="blog" v-for="item in items" :href="`/article/${item.id}`">
                 <span class="title">{{ item.title }}</span>
                 <span class="desc">{{ item.desc }}</span>
                 <span class="date">发布于 {{ item.date }}</span>
@@ -15,6 +15,7 @@
 import navBar from "../components/nav-bar.vue";
 import foot from "../components/foot.vue";
 import adjust from "../business/adjust.js";
+import weixin from '../business/weixin';
 export default {
   components: { navBar, foot },
   data: function() {
@@ -36,6 +37,7 @@ export default {
   },
   created: function() {
     this.init();
+    weixin.wxShare('王曙光的随笔', '这里有一些简单的记忆，平凡的知识，还有一点点小感悟','http://dawntech.top/assets/images/favicon.jpg', this.$http);
   },
   methods: {
     init: function() {

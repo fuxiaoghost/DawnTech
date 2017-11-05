@@ -3,7 +3,7 @@
 		<nav-bar :index="index"></nav-bar>
 		<div class="container">
             <div class="work">
-                <a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}?title=${photo.title}`" :target="linkTarget">
+                <a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}`" :target="linkTarget">
 				        <span class="image-cover">
 					        <img v-lazy="photo.url" />
 				        </span>
@@ -19,6 +19,7 @@
 import navBar from "../components/nav-bar.vue";
 import foot from "../components/foot.vue";
 import adjust from "../business/adjust.js";
+import weixin from '../business/weixin';
 export default {
   components: { navBar, foot },
   data: function() {
@@ -50,6 +51,9 @@ export default {
         .then(resp => {
           if (resp && resp.body && resp.body.items) {
             this.photos = resp.body.items;
+            var photo = this.photos[0];
+            var url = photo.url.replace('/api/', 'http://api.dawntech.top:3000/')
+            weixin.wxShare(photo.title, '',url, this.$http);
           }
         });
     }

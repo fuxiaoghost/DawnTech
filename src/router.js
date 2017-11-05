@@ -27,7 +27,7 @@ if (isMobile()) {
             { path: '/blog', name: 'blog', component: BLOG },
             { path: '/photos', name: 'photos', component: PHOTOS },
             { path: '/resume', name: 'resume', component: RESUME },
-            { path: '/article', name: 'article', component: ARTICLE },
+            { path: '/article/:id', name: 'article', component: ARTICLE },
             { path: '/photo/:category', name: 'photo', component: PHOTO },
         ]
     });
@@ -42,7 +42,7 @@ if (isMobile()) {
             { path: '/blog', name: 'blog', component: BLOG },
             { path: '/photos', name: 'photos', component: PHOTOS },
             { path: '/resume', name: 'resume', component: RESUME },
-            { path: '/article', name: 'article', component: ARTICLE },
+            { path: '/article/:id', name: 'article', component: ARTICLE },
             { path: '/photo/:category', name: 'photo', component: PHOTO },
         ]
     });

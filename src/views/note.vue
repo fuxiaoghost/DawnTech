@@ -34,6 +34,7 @@
 import navBar from "../components/nav-bar.vue";
 import foot from "../components/foot.vue";
 import adjust from "../business/adjust.js";
+import weixin from '../business/weixin';
 export default {
   components: { navBar, foot },
   data: function() {
@@ -61,6 +62,7 @@ export default {
   },
   created: function() {
     this.init();
+    weixin.wxShare('手记', '简单.好玩.有趣.实用的画板，随时随地记录你的想法和灵感','http://dawntech.top/assets/images/note.png', this.$http);
   },
   methods: {
     init: function() {
