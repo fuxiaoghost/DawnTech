@@ -65,7 +65,7 @@ export default {
     .title {
         display: block;
         font-size: 20px;
-        height: 40px;
+        min-height: 40px;
         line-height: 40px;
         color: #333;
     }
