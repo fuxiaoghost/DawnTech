@@ -36,7 +36,7 @@ if (isMobile()) {
         mode: 'history',
         scrollBehavior: () => ({ y: 0 }),
         routes: [
-            { path: '/', name: 'home', component: HOME },
+            { path: '/', name: 'blog', component: BLOG },
             { path: '/knbrush', name: 'knbrush', component: KNBRUSH },
             { path: '/note', name: 'note', component: NOTE },
             { path: '/blog', name: 'blog', component: BLOG },

@@ -56,7 +56,7 @@ export default {
       if (adjust.isMobile()) {
         return 3;
       }else {
-        return 4;
+        return 3;
       }
     }
   },

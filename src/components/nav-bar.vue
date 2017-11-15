@@ -41,10 +41,6 @@ export default {
     } else {
       this.navs = [
         {
-          title: "主页",
-          url: "/"
-        },
-        {
           title: "随笔",
           url: "/blog"
         },
