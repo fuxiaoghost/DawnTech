@@ -37,6 +37,7 @@ export default {
             this.title = resp.body.title;
             this.desc = resp.body.desc;
             weixin.wxShare(this.title, this.desc,'http://dawntech.top/assets/images/favicon.jpg', this.$http);
+						document.title = this.title;
           }
         });
     }

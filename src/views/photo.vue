@@ -50,8 +50,9 @@ export default {
           if (resp && resp.body && resp.body.items) {
             this.photos = resp.body.items;
             this.title = resp.body.title;
-            var photo = photos[0];
+            var photo = this.photos[0];
             weixin.wxShare(this.title, '',photo.url, this.$http);
+            document.title = this.title;
           }
         });
     },
