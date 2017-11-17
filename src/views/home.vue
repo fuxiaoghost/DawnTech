@@ -63,24 +63,24 @@ export default {
       });
 
       this.$http
-        .get("/api/home/cycle", {
+        .get("home/cycle", {
           params: {
             isMobile: adjust.isMobile()
           }
         })
         .then(resp => {
-          if (resp && resp.body && resp.body.items) {
-            this.slideList = resp.body.items;
+          if (resp && resp.data && resp.data.items) {
+            this.slideList = resp.data.items;
           }
         });
 
       this.$http
-        .get("/api/home/categories", {
+        .get("home/categories", {
           params: {}
         })
         .then(resp => {
-          if (resp && resp.body && resp.body.items) {
-            this.items = resp.body.items;
+          if (resp && resp.data && resp.data.items) {
+            this.items = resp.data.items;
           }
         });
     },

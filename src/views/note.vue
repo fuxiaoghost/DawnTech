@@ -67,14 +67,14 @@ export default {
   methods: {
     init: function() {
       this.$http
-        .get("/api/note", {
+        .get("note", {
           params: {}
         })
         .then(resp => {
-          if (resp && resp.body && resp.body.abstract) {
-            this.cns = resp.body.abstract.cns;
-            this.previews = resp.body.abstract.previews;
-            this.works = resp.body.abstract.works;
+          if (resp && resp.data && resp.data.abstract) {
+            this.cns = resp.data.abstract.cns;
+            this.previews = resp.data.abstract.previews;
+            this.works = resp.data.abstract.works;
           }
         });
     }

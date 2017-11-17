@@ -20,12 +20,12 @@
     </div>
 </template>
 <script>
-import adjust from '../business/adjust.js';
+import adjust from "../business/adjust.js";
 import foot from "../components/foot.vue";
-import weixin from '../business/weixin';
+import weixin from "../business/weixin";
 export default {
-    components: {foot},
-    data: function() {
+  components: { foot },
+  data: function() {
     return {
       photos: [],
       title: ""
@@ -36,23 +36,25 @@ export default {
   },
   computed: {
     linkTarget: function() {
-        return adjust.linkTarget();
+      return adjust.linkTarget();
     }
   },
   methods: {
     init: function() {
       var category = this.$route.params.category;
       this.$http
-        .get("/api/photo/" + category, {
+        .get("photo/" + category, {
           params: {}
         })
         .then(resp => {
-          if (resp && resp.body && resp.body.items) {
-            this.photos = resp.body.items;
-            this.title = resp.body.title;
+          if (resp && resp.data && resp.data.items) {
+            this.photos = resp.data.items;
+            this.title = resp.data.title;
             var photo = this.photos[0];
-            weixin.wxShare(this.title, '',photo.url, this.$http);
-            document.title = this.title;
+            weixin.wxShare(this.title, "", photo.url, this.$http);
+            if (typeof window != "undefined") {
+              document.title = this.title;
+            }
           }
         });
     },

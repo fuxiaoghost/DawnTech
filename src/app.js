@@ -1,17 +1,22 @@
 import Vue from 'vue';
-import VueResource from 'vue-resource';
 import App from './app.vue';
 import router from './router'; 
 import VueLazyload from 'vue-lazyload';
-
-Vue.use(VueResource);
+import axios from 'axios';
 
 Vue.use(VueLazyload, {
     loading: '/assets/images/loading.jpg'
 })
 
-new Vue({
-    el: '#app',
-    router: router,
-    render: h => h(App)
+let axiosInstance = axios.create({
+    baseURL: process.BROWSER ? '/api/' : process.env.APP_API,
+    timeout: process.BROWSER ? 10000 : 3000
 });
+
+Vue.prototype.$http = Vue.http = axiosInstance;
+
+const app = {
+    router,
+    ...App
+};
+export { app, router};

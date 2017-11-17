@@ -45,12 +45,12 @@ export default {
   methods: {
     init: function() {
       this.$http
-        .get("/api/photos", {
+        .get("photos", {
           params: {}
         })
         .then(resp => {
-          if (resp && resp.body && resp.body.items) {
-            this.photos = resp.body.items;
+          if (resp && resp.data && resp.data.items) {
+            this.photos = resp.data.items;
             var photo = this.photos[0];
             var url = photo.url.replace('/api/', 'http://api.dawntech.top:3000/')
             weixin.wxShare(photo.title, '',url, this.$http);

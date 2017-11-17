@@ -15,7 +15,7 @@
 import navBar from "../components/nav-bar.vue";
 import foot from "../components/foot.vue";
 import adjust from "../business/adjust.js";
-import weixin from '../business/weixin';
+import weixin from "../business/weixin";
 export default {
   components: { navBar, foot },
   data: function() {
@@ -37,18 +37,23 @@ export default {
   },
   created: function() {
     this.init();
-    weixin.wxShare('王曙光的随笔', '这里有一些简单的记忆，平凡的知识，还有一点点小感悟','http://dawntech.top/assets/images/favicon.jpg', this.$http);
+    weixin.wxShare(
+      "王曙光的随笔",
+      "这里有一些简单的记忆，平凡的知识，还有一点点小感悟",
+      "http://dawntech.top/assets/images/favicon.jpg",
+      this.$http
+    );
   },
   methods: {
     init: function() {
       this.$http
-        .get("/api/blogs", {
-          params: {}
+        .get("blogs", {
+            params: {}
         })
         .then(resp => {
-          if (resp && resp.body && resp.body.items) {
-            this.items = resp.body.items;
-          }
+            if (resp && resp.data && resp.data.items) {
+                this.items = resp.data.items;
+            }
         });
     }
   }

@@ -10,7 +10,7 @@
 import md2html from "../business/md2html.js";
 import navBar from "../components/nav-bar.vue";
 import foot from "../components/foot.vue";
-import weixin from '../business/weixin';
+import weixin from "../business/weixin";
 export default {
   components: { navBar, foot },
   data: function() {
@@ -25,21 +25,27 @@ export default {
   },
   methods: {
     convert: function(id) {
-      this.$http
-        .get("/api/blog/" + id, {
-          params: {}
-        })
-        .then(resp => {
-          if (resp && resp.body && resp.body.id) {
-            md2html.convertSrc(resp.body.target, (err, result) => {
-              this.htmlContent = result;
-            });
-            this.title = resp.body.title;
-            this.desc = resp.body.desc;
-            weixin.wxShare(this.title, this.desc,'http://dawntech.top/assets/images/favicon.jpg', this.$http);
-						document.title = this.title;
+      this.$http.get("blog/" + id).then(resp => {
+        if (resp && resp.data && resp.data.id) {
+            console.log(resp.data.target);
+          md2html.convertSrc(resp.data.target.replace("/api/",""), (err, result) => {
+            this.htmlContent = result;
+          });
+          this.title = resp.data.title;
+          this.desc = resp.data.desc;
+          weixin.wxShare(
+            this.title,
+            this.desc,
+            "http://dawntech.top/assets/images/favicon.jpg",
+            this.$http
+          );
+          if(typeof window !="undefined") {
+              if(typeof window !="undefined") {
+              document.title = this.title;
           }
-        });
+          }
+        }
+      });
     }
   }
 };

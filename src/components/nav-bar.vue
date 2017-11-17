@@ -19,11 +19,10 @@ export default {
     };
   },
   created: function() {
-    if (adjust.isMobile()) {
-      this.navs = [
+    this.navs = [
         {
           title: "随笔",
-          url: "/blog"
+          url: "/"
         },
         {
           title: "摄影集",
@@ -38,34 +37,6 @@ export default {
           url: "/note"
         }
       ];
-    } else {
-      this.navs = [
-        {
-          title: "随笔",
-          url: "/blog"
-        },
-        {
-          title: "摄影集",
-          url: "/photos"
-        },
-        {
-          title: "信手涂鸦",
-          url: "/knbrush"
-        },
-        {
-          title: "手记",
-          url: "/note"
-        }
-      ];
-    }
-
-    window.onscroll = () => {
-    //   if (window.scrollY > 160) {
-    //     this.navClass = "light";
-    //   } else {
-    //     this.navClass = "";
-    //   }
-    };
   },
   methods: {}
 };
