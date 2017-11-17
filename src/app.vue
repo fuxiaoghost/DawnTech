@@ -17,7 +17,7 @@ export default {
             padding: 0;
             font-size: 14px;
             color: #333;
-            background-color: #f2f2f2;
+            background-color: #fff;
             font-family: PingFang SC, Microsoft YaHei, simhei, Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
             -webkit-text-size-adjust: 100%;
@@ -34,17 +34,13 @@ export default {
             cursor: pointer;
         }
     }
-    .router-before {
+    .router-before .router-after {
         background-repeat: no-repeat;
         background-position: center;
         background-size: 70px;
         min-height: 400px;
         background-color: #fff;
         height: 100%;
-    }
-
-    .router-after {
-        background-image: none;
     }
     .page {
         height: 100%;

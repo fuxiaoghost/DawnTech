@@ -1120,6 +1120,16 @@ var axiosInstance = _axios2.default.create({
 
 _vue2.default.prototype.$http = _vue2.default.http = axiosInstance;
 
+_router2.default.beforeEach(function (to, from, next) {
+    return next();
+});
+
+_router2.default.afterEach(function (route) {
+    if (typeof window != "undefined") {
+        document.body.className = "router-after";
+    }
+});
+
 var app = (0, _extends3.default)({
     router: _router2.default
 }, _app2.default);
@@ -3026,7 +3036,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "html,html body{height:100%}html body{margin:0;padding:0;font-size:14px;color:#333;background-color:#f2f2f2;font-family:PingFang SC,Microsoft YaHei,simhei,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none}html a,html a:link{-webkit-appearance:none;text-decoration:none;color:#333;cursor:pointer}.router-before{background-repeat:no-repeat;background-position:50%;background-size:70px;min-height:400px;background-color:#fff;height:100%}.router-after{background-image:none}.page{height:100%;padding-top:60px}.page .container{width:70%!important;min-width:1024px;position:relative;margin:0 auto}@media screen and (max-width:500px){.page .container{width:100%;min-width:100%}}@media screen and (min-width:800px){.page .container{width:680px}}@media screen and (min-width:1024px){.page .container{width:1020px}}@media screen and (min-width:1360px){.page .container{width:1360px}}", ""]);
+exports.push([module.i, "html,html body{height:100%}html body{margin:0;padding:0;font-size:14px;color:#333;background-color:#fff;font-family:PingFang SC,Microsoft YaHei,simhei,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none}html a,html a:link{-webkit-appearance:none;text-decoration:none;color:#333;cursor:pointer}.router-before .router-after{background-repeat:no-repeat;background-position:50%;background-size:70px;min-height:400px;background-color:#fff;height:100%}.page{height:100%;padding-top:60px}.page .container{width:70%!important;min-width:1024px;position:relative;margin:0 auto}@media screen and (max-width:500px){.page .container{width:100%;min-width:100%}}@media screen and (min-width:800px){.page .container{width:680px}}@media screen and (min-width:1024px){.page .container{width:1020px}}@media screen and (min-width:1360px){.page .container{width:1360px}}", ""]);
 
 // exports
 
@@ -3040,7 +3050,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".nav-bar{height:60px;line-height:60px;background-color:#24292e;color:#fff;position:absolute;width:100%;z-index:100;top:0;transition:all 1s ease}.nav-bar .nav-left{float:left;margin-left:20px}.nav-bar .nav-item{display:block;float:left;padding:0 20px;text-align:center;position:relative;font-size:16px;font-weight:700;color:hsla(0,0%,100%,.75)!important}.nav-bar .nav-item:after{content:\"\";position:absolute;width:100%;height:2px;bottom:0;left:0;background-color:#000;transition:all .5s ease}.nav-bar .nav-item.active,.nav-bar .nav-item:hover{color:#fff!important}.nav-bar .nav-item.active:after,.nav-bar .nav-item:hover:after{background-color:#fff}@media screen and (max-width:500px){.nav-bar .nav-item{padding:0;width:25%}}", ""]);
+exports.push([module.i, ".nav-bar{height:60px;line-height:60px;background-color:#24292e;color:#fff;position:absolute;width:100%;z-index:100;top:0}.nav-bar .nav-left{float:left;margin-left:20px}.nav-bar .nav-item{display:block;float:left;padding:0 20px;text-align:center;position:relative;font-size:16px;font-weight:700;color:hsla(0,0%,100%,.75)!important}.nav-bar .nav-item:after{content:\"\";position:absolute;width:100%;height:2px;bottom:0;left:0;background-color:#000;transition:all .5s ease}.nav-bar .nav-item.active,.nav-bar .nav-item:hover{color:#fff!important}.nav-bar .nav-item.active:after,.nav-bar .nav-item:hover:after{background-color:#fff}@media screen and (max-width:500px){.nav-bar .nav-item{padding:0;width:25%}}", ""]);
 
 // exports
 

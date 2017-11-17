@@ -51,7 +51,6 @@ export default {
         width: 100%;
         z-index: 100;
         top:0;
-        transition: all 1s ease;
         .nav-left {
             float: left;
             margin-left: 20px;

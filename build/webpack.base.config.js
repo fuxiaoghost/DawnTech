@@ -8,11 +8,7 @@ module.exports = {
         rules: [
             { test: /\.vue$/, loader: 'vue-loader' }, 
             { test: /\.js$/, loader: 'babel-loader',exclude: /node_modules/ },
-            { test: /\.scss$/, loader: ExtractTextPlugin.extract({
-                    fallbackLoader: "style-loader",
-                    loader: "css-loader!sass-loader",
-                })
-            }
+            { test: /\.scss$/, loader: 'style!css!autoprefixer!sass'}
         ]
     }
     // devServer: {

@@ -15,6 +15,16 @@ let axiosInstance = axios.create({
 
 Vue.prototype.$http = Vue.http = axiosInstance;
 
+router.beforeEach((to, from, next) => {
+    return next();
+});
+
+router.afterEach(route => {
+    if(typeof window !="undefined") {
+        document.body.className = "router-after";
+    }
+})
+
 const app = {
     router,
     ...App

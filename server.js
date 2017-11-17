@@ -96,13 +96,11 @@ app.get('*', (req, res) => {
     })
 })
 
-// app.listen(80, '172.17.210.194', function() {
-//     console.log(`server started at localhost:${port}`)
-// })
 
 const port = process.env.PORT || 9095
-app.listen(port, () => {
-    console.log(`server started at localhost:${port}`)
+const ip = process.env.SERVER || 'localhost'
+app.listen(port, ip , () => {
+    console.log(`server started at ${ip}:${port}`)
 })
 
 
