@@ -1,9 +1,9 @@
 export default {
-    isMobile: function() {
+    isMobile: function () {
         var userAgent = process.BROWSER ? navigator.userAgent : process.UA;
         return !!userAgent.match(/(iPhone|iPod|Android|ios)/i);
     },
-    linkTarget : function() {
+    linkTarget: function () {
         return this.isMobile() ? '' : '_blank';
     }
 }

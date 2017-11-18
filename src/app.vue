@@ -25,7 +25,7 @@ export default {
             -webkit-touch-callout: none;
             /*去除 ios safari <a>以及 <input> 选中时高亮显示，去除高亮后我们可以自定义样式*/
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-            -webkit-user-select: none;  
+            // -webkit-user-select: none;  
         }
         a, a:link {
             -webkit-appearance: none;

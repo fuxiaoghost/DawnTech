@@ -1164,13 +1164,13 @@ exports.default = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.default = {
-    data: function data() {
-        return {};
-    },
-    methods: {}
+  data: function data() {
+    return {};
+  },
+  methods: {}
 };
 
 /***/ }),
@@ -1262,7 +1262,6 @@ exports.default = {
 
       this.$http.get("blog/" + id).then(function (resp) {
         if (resp && resp.data && resp.data.id) {
-          console.log(resp.data.target);
           _md2html2.default.convertSrc(resp.data.target.replace("/api/", ""), function (err, result) {
             _this.htmlContent = result;
           });
@@ -3036,7 +3035,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "html,html body{height:100%}html body{margin:0;padding:0;font-size:14px;color:#333;background-color:#fff;font-family:PingFang SC,Microsoft YaHei,simhei,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none}html a,html a:link{-webkit-appearance:none;text-decoration:none;color:#333;cursor:pointer}.router-before .router-after{background-repeat:no-repeat;background-position:50%;background-size:70px;min-height:400px;background-color:#fff;height:100%}.page{height:100%;padding-top:60px}.page .container{width:70%!important;min-width:1024px;position:relative;margin:0 auto}@media screen and (max-width:500px){.page .container{width:100%;min-width:100%}}@media screen and (min-width:800px){.page .container{width:680px}}@media screen and (min-width:1024px){.page .container{width:1020px}}@media screen and (min-width:1360px){.page .container{width:1360px}}", ""]);
+exports.push([module.i, "html,html body{height:100%}html body{margin:0;padding:0;font-size:14px;color:#333;background-color:#fff;font-family:PingFang SC,Microsoft YaHei,simhei,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}html a,html a:link{-webkit-appearance:none;text-decoration:none;color:#333;cursor:pointer}.router-before .router-after{background-repeat:no-repeat;background-position:50%;background-size:70px;min-height:400px;background-color:#fff;height:100%}.page{height:100%;padding-top:60px}.page .container{width:70%!important;min-width:1024px;position:relative;margin:0 auto}@media screen and (max-width:500px){.page .container{width:100%;min-width:100%}}@media screen and (min-width:800px){.page .container{width:680px}}@media screen and (min-width:1024px){.page .container{width:1020px}}@media screen and (min-width:1360px){.page .container{width:1360px}}", ""]);
 
 // exports
 
@@ -3092,7 +3091,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".footer{padding:40px 0;text-align:center;background-color:#fff;color:#999!important;font-size:13px}.footer .copyright,.footer .icp{height:20px;display:block}.footer .icp{color:#999!important}.footer .icon{width:100px;display:block;margin:0 auto;padding:6px 0;font-size:30px;color:#999}", ""]);
+exports.push([module.i, ".footer{padding:40px 0;text-align:center;background-color:#fff;color:#999!important;font-size:13px}.footer .copyright{height:20px;display:block;color:#999}.footer .icp{height:20px;display:block;color:#999!important}.footer .icon{width:100px;display:block;margin:0 auto;padding:6px 0;font-size:30px;color:#999}.footer .mail{height:20px;display:block;color:#999}", ""]);
 
 // exports
 
@@ -3610,15 +3609,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('span', {
     staticClass: "copyright"
   }, [_vm._v("2017 dawntech.top. All rights reserved.")]), _vm._v(" "), _c('a', {
-    staticClass: "icp",
+    staticClass: "mail",
     attrs: {
-      "target": "_blank",
-      "href": "http://www.miitbeian.gov.cn"
+      "href": "mailto:wangsguang@gmail.com"
     }
+  }, [_vm._v("wangsguang@gmail.com")]), _vm._v(" "), _c('span', {
+    staticClass: "icp"
   }, [_vm._v("京ICP备17056676号")]), _vm._v(" "), _c('a', {
     staticClass: "icon iconfont icon-yinzhang",
     attrs: {
-      "href": "/blog"
+      "href": "/"
     }
   })])
 }]}

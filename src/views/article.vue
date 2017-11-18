@@ -27,7 +27,6 @@ export default {
     convert: function(id) {
       this.$http.get("blog/" + id).then(resp => {
         if (resp && resp.data && resp.data.id) {
-            console.log(resp.data.target);
           md2html.convertSrc(resp.data.target.replace("/api/",""), (err, result) => {
             this.htmlContent = result;
           });
