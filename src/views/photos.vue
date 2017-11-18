@@ -3,7 +3,7 @@
         <nav-bar :index="index"></nav-bar>
         <div class="container">
             <div class="work">
-                <a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}`" :target="linkTarget">
+                <a class="image-item" v-for="photo in photos" :title="photo.title" :href="`/photo/${photo.category}`" :target="linkTarget">
                     <span class="image-cover">
                             <img v-lazy="photo.url" />
                         </span>
@@ -48,7 +48,14 @@ export default {
     preFetch: function(store) {
         var category = store.state.route.params.category;
         return store.dispatch("getPhotos").then(() => {
-
+            var keywords = [];
+            store.state.photos.forEach(function(photo) {
+                keywords.push(photo.title);
+            }, this);
+            store.dispatch("header", {
+                title: "摄影集",
+                keyword: keywords.join(',')
+            });
         });
     },
     methods: {
@@ -69,7 +76,6 @@ export default {
                 display: inline-block;
                 background-color: #fff;
                 margin: 7px;
-                transition: all 0.5s ease;
                 padding: 8px 8px 0px 8px;
                 &:hover {
                     box-shadow: 0px 0px 10px 2px #ccc;

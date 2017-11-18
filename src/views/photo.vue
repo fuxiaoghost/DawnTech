@@ -8,7 +8,7 @@
                 <span>◇</span>
                 <span>.</span>
             </div>
-            <a class="image-item" v-for="photo in photos" :href="`${photo.url}`" :target="linkTarget">
+            <a class="image-item" v-for="photo in photos" :href="`${photo.url}`" :target="linkTarget" :title="title">
                 <span class="image-cover">
                     <img v-lazy="photo.url" />
                     <span class="image-camera" v-if="notnull(photo.camera)">{{photo.camera}}</span>

@@ -12,14 +12,14 @@
                 <span class="abstract-tips">应用预览</span>
                 <div class="preview">
                     <div v-for="item in previews" class="item">
-                        <a class="boarder" :href="item" :target="linkTarget">
+                        <a class="boarder" :href="item" title="应用预览" :target="linkTarget">
                             <img v-lazy="item" alt="">
                         </a>
                     </div>
                 </div>
                 <span class="abstract-tips">作品展示</span>
                 <div class="works">
-                    <a class="image-item" v-for="item in works" :href="item" :target="linkTarget">
+                    <a class="image-item" title="作品" v-for="item in works" :href="item" :target="linkTarget">
                         <span class="image-cover">
                             <img v-lazy="item" />
                         </span>

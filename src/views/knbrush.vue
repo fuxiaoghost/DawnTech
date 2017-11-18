@@ -16,14 +16,14 @@
                 <span class="abstract-tips">应用预览</span>
                 <div class="preview">
                     <div v-for="item in previews" class="item">
-                        <a class="boarder" :href="item" :target="linkTarget">
+                        <a class="boarder" title="应用预览" :href="item" :target="linkTarget">
                             <img v-lazy="item" alt="">
                         </a>
                     </div>
                 </div>
                 <span class="abstract-tips">作品展示</span>
                 <div class="works">
-                    <a class="image-item" v-for="item in works" :href="item" :target="linkTarget">
+                    <a class="image-item" title="作品" v-for="item in works" :href="item" :target="linkTarget">
                         <span class="image-cover">
                             <img v-lazy="item" />
                         </span>
@@ -74,7 +74,7 @@ export default {
         return store.dispatch("getKNBrush").then(() => {
             return store.dispatch("getBlogs").then(() => {
                 var header = {
-                    title: "信手涂鸦 - 素描.涂色.P图.手绘大师",
+                    title: "信手涂鸦",
                     desc: "这是一款适合所有用户的非常高效的绘画工具，快速打开，易学易用。虽然采用了简约的设计手法但是软件仍然可以提供丰富的功能",
                     keyword: "素描,涂色,P图,手绘大师,Sketch,Draw,Note,Doodle,Masters"
                 }

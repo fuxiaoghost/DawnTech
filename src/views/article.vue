@@ -30,7 +30,7 @@ export default {
         return store.dispatch("getArticle", {id: id}).then(() => {
             var header = {
                 title: store.state.article.title,
-                desc: store.state.article.title
+                desc: store.state.article.desc
             }
             store.dispatch("header", header);
         });
