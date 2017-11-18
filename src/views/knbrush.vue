@@ -40,185 +40,188 @@ import foot from "../components/foot.vue";
 import adjust from "../business/adjust.js";
 import weixin from '../business/weixin';
 export default {
-  components: { navBar, foot },
-  data: function() {
-    return {
-      ens: [],
-      cns: [],
-      previews: [],
-      works: []
-    };
-  },
-  computed: {
-    mobile: function() {
-      return adjust.isMobile();
+    components: {
+        navBar,
+        foot
     },
-    linkTarget: function() {
-      return adjust.linkTarget();
+    data: function() {
+        return {
+            ens: this.$store.state.knbrush.ens,
+            cns: this.$store.state.knbrush.cns,
+            previews: this.$store.state.knbrush.previews,
+            works: this.$store.state.knbrush.works
+        };
     },
-    index: function() {
-      if (adjust.isMobile()) {
-        return 2;
-      }else {
-        return 2;
-      }
-    }
-  },
-  created: function() {
-    this.init();
-    weixin.wxShare('信手涂鸦 - 素描.涂色.P图.手绘大师', '这是一款适合所有用户的非常高效的绘画工具，快速打开，易学易用。虽然采用了简约的设计手法但是软件仍然可以提供丰富的功能','http://dawntech.top/assets/images/knbrush.png', this.$http);
-  },
-  methods: {
-    init: function() {
-      this.$http
-        .get("knbrush")
-        .then(resp => {
-          if (resp && resp.data && resp.data.abstract) {
-            this.ens = resp.data.abstract.ens;
-            this.cns = resp.data.abstract.cns;
-            this.previews = resp.data.abstract.previews;
-            this.works = resp.data.abstract.works;
-          }
+    computed: {
+        mobile: function() {
+            return adjust.isMobile();
+        },
+        linkTarget: function() {
+            return adjust.linkTarget();
+        },
+        index: function() {
+            if (adjust.isMobile()) {
+                return 2;
+            } else {
+                return 2;
+            }
+        }
+    },
+    created: function() {
+        this.init();
+    },
+    preFetch: function(store) {
+        return store.dispatch("getKNBrush").then(() => {
+            return store.dispatch("getBlogs").then(() => {
+                var header = {
+                    title: "信手涂鸦 - 素描.涂色.P图.手绘大师",
+                    desc: "这是一款适合所有用户的非常高效的绘画工具，快速打开，易学易用。虽然采用了简约的设计手法但是软件仍然可以提供丰富的功能",
+                    keyword: "素描,涂色,P图,手绘大师,Sketch,Draw,Note,Doodle,Masters"
+                }
+                store.dispatch("header", header);
+            });
         });
+    },
+    methods: {
+        init: function() {
+            
+        }
     }
-  }
 };
 </script>
 <style lang="sass">
-    .text {
-        background-color: #fff;
-        .name {
-            padding: 0px 18px;
-            height: 40px;
-            line-height: 40px;
-            padding-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            display: block;
-            color: #298cda;
-            &:hover {
-                text-decoration: underline;
-            }
+.text {
+    background-color: #fff;
+    .name {
+        padding: 0px 18px;
+        height: 40px;
+        line-height: 40px;
+        padding-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        display: block;
+        color: #298cda;
+        &:hover {
+            text-decoration: underline;
         }
-        .subname {
-            padding: 0px 18px;
-            height: 20px;
-            line-height: 20px;
+    }
+    .subname {
+        padding: 0px 18px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 14px;
+        color: #298cda;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    .qrcode {
+        position: absolute;
+        top: 20px;
+        right: 18px;
+        width: 140px;
+        height: 140px;
+    }
+    .abstract-tips {
+        padding: 0px 18px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        display: block;
+        margin-top: 60px;
+    }
+    .abstract-content {
+        padding: 0px 18px;
+        .abstract-item {
+            display: block;
             font-size: 14px;
-            color: #298cda;
-            &:hover {
-                text-decoration: underline;
-            }
+            color: #666;
+            min-height: 24px;
+            line-height: 24px;
         }
-        .qrcode {
-            position: absolute;
-            top: 20px;
-            right: 18px;
-            width: 140px;
-            height: 140px;
-        }
-        .abstract-tips {
-            padding: 0px 18px;
-            height: 20px;
-            line-height: 20px;
-            font-size: 16px;
-            font-weight: bold;
+    }
+    .abstract-content-en {
+        padding: 0px 18px;
+        padding-top: 20px;
+        .abstract-item {
             display: block;
-            margin-top: 60px;
+            font-size: 14px;
+            color: #999;
+            min-height: 24px;
+            line-height: 24px;
         }
-        .abstract-content {
-            padding: 0px 18px;
-            .abstract-item {
+    }
+    .preview {
+        padding: 0px 18px;
+        margin-top: 10px;
+        overflow: hidden;
+        overflow-x: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+        text-align: justify;
+        .item {
+            width: 400px;
+            padding: 5px 30px 0px 0px;
+            display: inline-block;
+            .boarder {
+                background-color: #fff;
+                width: 100%;
                 display: block;
-                font-size: 14px;
-                color: #666;
-                min-height: 24px;
-                line-height: 24px;
-            }
-        }
-        .abstract-content-en {
-            padding: 0px 18px;
-            padding-top: 20px;
-            .abstract-item {
-                display: block;
-                font-size: 14px;
-                color: #999;
-                min-height: 24px;
-                line-height: 24px;
-            }
-        }
-
-        .preview {
-            padding: 0px 18px;
-            margin-top: 10px;
-            overflow: hidden;
-            overflow-x:auto;
-            white-space: nowrap;
-            overflow: hidden;
-            overflow-x: scroll;
-            -webkit-overflow-scrolling: touch;
-            text-align: justify;
-            .item {
-                width: 400px;
-                padding: 5px 30px 0px 0px;
-                display: inline-block;
-                .boarder {
-                    background-color: #fff;
+                img {
                     width: 100%;
+                }
+            }
+        }
+    }
+    .works {
+        padding-bottom: 40px;
+        .image-item {
+            margin: 20px 0px;
+            width: 100%;
+            display: inline-block;
+            background-color: #fff;
+            transition: all 0.5s ease;
+            box-shadow: 0px 0px 10px 2px #ccc;
+            .image-cover {
+                padding: 20px 20px 20px 20px;
+                width: auto;
+                display: block;
+                background-color: #fff;
+                img {
+                    width: 100%;
+                    height: 100%;
                     display: block;
-                    img {
-                        width: 100%;
-                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width: 500px) {
+        .preview {
+            padding: 0px !important;
+            margin-top: 10px;
+            .item {
+                padding: 5px 10px;
+                width: 80%;
+                .boarder {
+                    padding: 0px;
                 }
             }
         }
         .works {
-            padding-bottom: 40px;
+            padding-bottom: 12px;
             .image-item {
-                margin: 20px 0px;
-                width: 100%;
-                display: inline-block;
-                background-color: #fff;
-                transition: all 0.5s ease;
-                box-shadow: 0px 0px 10px 2px #ccc;
+                width: auto;
+                display: block;
+                margin: 0px;
+                box-shadow: none;
                 .image-cover {
-                    padding: 20px 20px 20px 20px;
-                    width: auto;
-                    display: block;
-                    background-color: #fff;
-                    img {
-                        width: 100%;
-                        height: 100%;
-                        display: block;
-                    }
-                }
-            }
-        }
-        
-        @media screen and (max-width: 500px) {
-            .preview {
-                padding: 0px !important;
-                margin-top: 10px;
-                .item {
-                    padding: 5px 10px;
-                    width: 80%;
-                    .boarder {
-                        padding: 0px;
-                    }
-                }
-            }
-            .works {
-                padding-bottom: 12px;
-                .image-item {
-                    width: auto;
-                    display: block;
-                    margin: 0px;
-                    box-shadow: none;
-                    .image-cover {
-                        padding: 12px 12px 0px 12px;
-                    }
+                    padding: 12px 12px 0px 12px;
                 }
             }
         }
     }
+}
 </style>

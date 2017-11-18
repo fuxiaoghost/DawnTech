@@ -1,5 +1,5 @@
 export default {
-    wxShare:function(title, desc, imageUrl, http) {
+    wxShare: function (title, desc, imageUrl, http) {
         // var href = encodeURIComponent(location.href); 
         // var url = '/api/signature?url=' + href; 
         // var self = this; 
@@ -27,7 +27,7 @@ export default {
         //         }); 
         //     }
         // }, function () {
-    
+
         // }); 
-    }   
+    }
 }

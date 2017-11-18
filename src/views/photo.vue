@@ -12,7 +12,7 @@
                 <span class="image-cover">
                     <img v-lazy="photo.url" />
                     <span class="image-camera" v-if="notnull(photo.camera)">{{photo.camera}}</span>
-                    <span class="image-exif" >{{photo.exif}}</span>
+                <span class="image-exif">{{photo.exif}}</span>
                 </span>
             </a>
         </div>
@@ -24,44 +24,37 @@ import adjust from "../business/adjust.js";
 import foot from "../components/foot.vue";
 import weixin from "../business/weixin";
 export default {
-  components: { foot },
-  data: function() {
-    return {
-      photos: [],
-      title: ""
-    };
-  },
-  created: function() {
-    this.init();
-  },
-  computed: {
-    linkTarget: function() {
-      return adjust.linkTarget();
-    }
-  },
-  methods: {
-    init: function() {
-      var category = this.$route.params.category;
-      this.$http
-        .get("photo/" + category, {
-          params: {}
-        })
-        .then(resp => {
-          if (resp && resp.data && resp.data.items) {
-            this.photos = resp.data.items;
-            this.title = resp.data.title;
-            var photo = this.photos[0];
-            weixin.wxShare(this.title, "", photo.url, this.$http);
-            if (typeof window != "undefined") {
-              document.title = this.title;
-            }
-          }
+    components: {
+        foot
+    },
+    data: function() {
+        return {
+            photos: this.$store.state.photo.photos,
+            title: this.$store.state.photo.title
+        };
+    },
+    created: function() {
+        this.init();
+    },
+    computed: {
+        linkTarget: function() {
+            return adjust.linkTarget();
+        }
+    },
+    preFetch: function(store) {
+        var category = store.state.route.params.category;
+        return store.dispatch("getPhoto", {category: category}).then(() => {
+            store.dispatch("header", {title: store.state.photo.title});
         });
     },
-    notnull: function(s) {
-      return typeof s != "undefined" && s != null && s.length > 0;
+    methods: {
+        init: function() {
+            
+        },
+        notnull: function(s) {
+            return typeof s != "undefined" && s != null && s.length > 0;
+        }
     }
-  }
 };
 </script>
 <style lang="sass">
@@ -73,7 +66,7 @@ export default {
             .photo-category {
                 font-size: 30px;
                 color: #333333;
-                font-weight:bold;
+                font-weight: bold;
                 height: 60px;
                 line-height: 60px;
                 text-align: center;

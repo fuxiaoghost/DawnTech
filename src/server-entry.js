@@ -1,4 +1,4 @@
-import { app, router } from './app'
+import {  app, router, store } from './app'
 import Vue from 'vue'
 
 const isDev = process.env.NODE_ENV !== 'production'
@@ -24,10 +24,11 @@ export default context => {
 
     return Promise.all(matchedComponents.map(component => {
         if (component.preFetch) {
-            return component.preFetch(store)
+            return component.preFetch(store);
         }
     })).then(() => {
-        isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`)
+        isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`);
+        context.initialState = store.state;
         return _app
     })
 }

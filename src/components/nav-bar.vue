@@ -20,23 +20,23 @@ export default {
   },
   created: function() {
     this.navs = [
-        {
-          title: "随笔",
-          url: "/"
-        },
-        {
-          title: "摄影集",
-          url: "/photos"
-        },
-        {
-          title: "信手涂鸦",
-          url: "/knbrush"
-        },
-        {
-          title: "手记",
-          url: "/note"
-        }
-      ];
+      {
+        title: "随笔",
+        url: "/"
+      },
+      {
+        title: "摄影集",
+        url: "/photos"
+      },
+      {
+        title: "信手涂鸦",
+        url: "/knbrush"
+      },
+      {
+        title: "手记",
+        url: "/note"
+      }
+    ];
   },
   methods: {}
 };

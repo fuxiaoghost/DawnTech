@@ -5,6 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const compression = require('compression')
+const serialize = require('serialize-javascript')
 const resolve = file => path.resolve(__dirname, file)
 const proxy = require('express-http-proxy');
 const app = express()
@@ -71,6 +72,13 @@ app.get('*', (req, res) => {
     const renderStream = renderer.renderToStream(context)
     renderStream.once('data', () => {
         var htmlHead = indexHTML.head;
+        //todo: SEM Head will become a plugin, need to reconsitution
+        if(context.initialState && context.initialState.htmlHead) {
+            htmlHead = indexHTML.head.replace('<!-- TITLE -->', context.initialState.htmlHead.title)
+            .replace("|-- DESC --|", context.initialState.htmlHead.desc)
+            .replace("|-- KEYWORD --|", context.initialState.htmlHead.keyword);
+        }
+                
         res.write(htmlHead)
     })
 
@@ -79,9 +87,12 @@ app.get('*', (req, res) => {
     })
 
     renderStream.on('end', () => {
+        if (context.initialState) {
+            res.write(`<script>window.__INITIAL_STATE__=${serialize(context.initialState, { isJSON: true })}</script>`);
+        }
         res.end(indexHTML.tail)
         // console.log(`${s} whole request: ${Date.now() - s}ms ${req.url}`)
-    })
+    });
 
     renderStream.on('error', err => {
         if (err && err.code === '404') {

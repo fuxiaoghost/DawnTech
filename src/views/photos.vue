@@ -1,19 +1,19 @@
 <template>
-	<div class="photos">
-		<nav-bar :index="index"></nav-bar>
-		<div class="container">
+    <div class="photos">
+        <nav-bar :index="index"></nav-bar>
+        <div class="container">
             <div class="work">
                 <a class="image-item" v-for="photo in photos" :href="`/photo/${photo.category}`" :target="linkTarget">
-				        <span class="image-cover">
-					        <img v-lazy="photo.url" />
-				        </span>
-				        <span class="image-title">{{photo.title}}</span>
+                    <span class="image-cover">
+                            <img v-lazy="photo.url" />
+                        </span>
+                    <span class="image-title">{{photo.title}}</span>
                     <span class="image-date">{{photo.date}}</span>
-			     </a>
+                </a>
             </div>
-		</div>
-		<foot></foot>
-	</div>
+        </div>
+        <foot></foot>
+    </div>
 </template>
 <script>
 import navBar from "../components/nav-bar.vue";
@@ -21,43 +21,41 @@ import foot from "../components/foot.vue";
 import adjust from "../business/adjust.js";
 import weixin from '../business/weixin';
 export default {
-  components: { navBar, foot },
-  data: function() {
-    return {
-      photos: []
-    };
-  },
-  created: function() {
-    this.init();
-  },
-  computed: {
-    linkTarget: function() {
-      return adjust.linkTarget();
+    components: {
+        navBar,
+        foot
     },
-    index: function() {
-      if (adjust.isMobile()) {
-        return 1;
-      } else {
-        return 1;
-      }
-    }
-  },
-  methods: {
-    init: function() {
-      this.$http
-        .get("photos", {
-          params: {}
-        })
-        .then(resp => {
-          if (resp && resp.data && resp.data.items) {
-            this.photos = resp.data.items;
-            var photo = this.photos[0];
-            var url = photo.url.replace('/api/', 'http://api.dawntech.top:3000/')
-            weixin.wxShare(photo.title, '',url, this.$http);
-          }
+    data: function() {
+        return {
+            photos: this.$store.state.photos
+        };
+    },
+    created: function() {
+        this.init();
+    },
+    computed: {
+        linkTarget: function() {
+            return adjust.linkTarget();
+        },
+        index: function() {
+            if (adjust.isMobile()) {
+                return 1;
+            } else {
+                return 1;
+            }
+        }
+    },
+    preFetch: function(store) {
+        var category = store.state.route.params.category;
+        return store.dispatch("getPhotos").then(() => {
+
         });
+    },
+    methods: {
+        init: function() {
+           
+        }
     }
-  }
 };
 </script>
 <style lang="sass">

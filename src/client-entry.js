@@ -1,6 +1,6 @@
 import 'es6-promise/auto'
 import Vue from 'vue'
-import { app, router } from './app'
+import {  app, router, store } from './app'
 
 const path = getLocation(router.options.base)
 const resolveComponents = flatMapComponents(router.match(path), (Component, _, match, key, index) => {
@@ -22,7 +22,8 @@ const resolveComponents = flatMapComponents(router.match(path), (Component, _, m
 Promise.all(resolveComponents)
     .then((Components) => {
         const _app = new Vue(app);
-        _app.$mount('#app')
+        store.replaceState(window.__INITIAL_STATE__);
+        _app.$mount('#app');
     })
     .catch((err) => {
         console.error('Cannot load components', err)
