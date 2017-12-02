@@ -10,6 +10,7 @@ const PHOTOS = process.BROWSER ? () => System.import('./views/photos.vue') : req
 const RESUME = process.BROWSER ? () => System.import('./views/resume.vue') : require('./views/resume.vue');
 const ARTICLE = process.BROWSER ? () => System.import('./views/article.vue') : require('./views/article.vue');
 const PHOTO = process.BROWSER ? () => System.import('./views/photo.vue') : require('./views/photo.vue');
+const PANORAM = process.BROWSER ? () => System.import('./views/panoram.vue') : require('./views/panoram.vue'); 
 
 var isMobile = function () {
     var userAgent = process.BROWSER ? navigator.userAgent : process.UA;
@@ -30,7 +31,7 @@ router = new Router({
         { path: '/', name: 'blog', component: BLOG },
         { path: '/knbrush', name: 'knbrush', component: KNBRUSH },
         { path: '/note', name: 'note', component: NOTE },
-        // { path: '/blog', name: 'blog', component: BLOG },
+        { path: '/panoram', name: 'panoram', component: PANORAM },
         { path: '/photos', name: 'photos', component: PHOTOS },
         { path: '/resume', name: 'resume', component: RESUME },
         { path: '/article/:id', name: 'article', component: ARTICLE },

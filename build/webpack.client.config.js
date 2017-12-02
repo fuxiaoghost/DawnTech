@@ -15,11 +15,11 @@ module.exports = Object.assign({}, base, {
         chunkFilename: 'app.[chunkhash].js'
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
         new HtmlWebpackPlugin({
             template: './src/index.html'
         }),

@@ -9,6 +9,10 @@ let axiosInstance = axios.create({
     timeout: process.BROWSER ? 10000 : 3000
 });
 
+let axiosInstance2 = axios.create({
+    timeout: process.BROWSER ? 10000 : 3000
+});
+
 Vue.prototype.$http = Vue.http = axiosInstance;
 
 Vue.use(Vuex);
@@ -40,7 +44,11 @@ const store = new Vuex.Store({
             title: "",
             photos: []
         },
-        photos: []
+        photos: [],
+        panoram: {
+            fsh: "",
+            vsh: ""
+        }
     },
     actions: {
         header: (context, query) => {
@@ -115,6 +123,22 @@ const store = new Vuex.Store({
                     context.commit("initPhotos", photos);
                 }
             });
+        },
+        getPanoram: (context, query) => {
+            return new Promise((resolve,reject) => {
+                axiosInstance2.get('/assets/shaders/panoram.fsh').then(fsh => {
+                    if (fsh && fsh.data) {
+                        axiosInstance2.get('/assets/shaders/panoram.vsh').then(vsh => {
+                            if(vsh && vsh.data) {
+                                resolve({fsh: fsh.data, vsh: vsh.data});                
+                            }
+                        });
+                    }
+                });
+            }).then (result => {
+                context.commit("initPanoram", result);
+                return "";
+            });
         }
     },
     mutations: {
@@ -154,6 +178,10 @@ const store = new Vuex.Store({
             if (query.keyword) {
                 state.htmlHead.keyword = query.keyword;   
             }
+        },
+        initPanoram: (state, query) => {
+            state.panoram.fsh = query.fsh;
+            state.panoram.vsh = query.vsh;
         }
     }
 });
