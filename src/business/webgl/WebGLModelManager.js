@@ -31,8 +31,18 @@ class Matrix4  {
     matrix4GetMatrix3() {
         var matrix = this;
         m3.m = [ matrix.m[0], matrix.m[1], matrix.m[2], matrix.m[4], matrix.m[5], matrix.m[6], matrix.m[8], matrix.m[9], matrix.m[10] ];
-        var m3 = Matrix3();
+        var m3 = new Matrix3();
         return m3;
+    }
+
+    copy() {
+        var m4 = new Matrix4();
+        m4.m = [this.m[0], this.m[1], this.m[2], this.m[3],
+                this.m[4], this.m[5], this.m[6], this.m[7],
+                this.m[8], this.m[9], this.m[10], this.m[11],
+                this.m[12], this.m[13], this.m[14], this.m[15],
+                ];
+        return m4;
     }
 
     static makePerspective(fovyRadians, aspect, nearZ, farZ) {
@@ -41,6 +51,41 @@ class Matrix4  {
         m.m = [ cotan/aspect, 0.0, 0.0, 0.0,0.0, cotan, 0.0, 0.0,0.0, 0.0, (farZ + nearZ) / (nearZ - farZ), -1.0,0.0, 0.0, (2.0 * farZ * nearZ) / (nearZ - farZ), 0.0 ];
         
         return m;
+    }
+
+    static makeTranslation(tx, ty, tz) {
+        var m4 = new Matrix4();
+        m4.m[12] = tx;
+        m4.m[13] = ty;
+        m4.m[14] = tz;
+        return m4;
+    }
+
+    static makeRotation(radians, x, y, z) {
+        var v = (new Vector3(x, y, z)).normalize();
+        var cos = Math.cos(radians);
+        var cosp = 1.0 - cos;
+        var sin = Math.sin(radians);
+        
+        var m4 = new Matrix4();
+        m4.m = [cos + cosp * v.v[0] * v.v[0],   
+                cosp * v.v[0] * v.v[1] + v.v[2] * sin,
+                cosp * v.v[0] * v.v[2] - v.v[1] * sin,
+                0.0,
+                cosp * v.v[0] * v.v[1] - v.v[2] * sin,
+                cos + cosp * v.v[1] * v.v[1],
+                cosp * v.v[1] * v.v[2] + v.v[0] * sin,
+                0.0,
+                cosp * v.v[0] * v.v[2] + v.v[1] * sin,
+                cosp * v.v[1] * v.v[2] - v.v[0] * sin,
+                cos + cosp * v.v[2] * v.v[2],
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0];
+    
+        return m4;
     }
 }
 
@@ -103,23 +148,122 @@ class Matrix3 {
     }
 };
 
+class Vector3 {
+    v = [0, 0, 0];
+    constructor(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    get x() {
+        return this.v[0];
+    }
+    
+    set x(value) {
+        this.v[0] = value;
+    }
+
+    get y() {
+        return this.v[1];
+    }
+
+    set y(value) {
+        this.v[1] = value;
+    }
+
+    get z() {
+        return this.v[2];
+    }
+
+    set z(value) {
+        this.v[2] = value;
+    }
+
+    length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
+    normalize() {
+        var scale = 1.0 / this.length();
+        this.x = this.x * scale;
+        this.y = this.y * scale;
+        this.z = this.z * scale;
+        return this;
+    }
+
+    static dotProduct(vectorLeft, vectorRight) {
+        return vectorLeft.x * vectorRight.x + vectorLeft.y * vectorRight.y + vectorLeft.z * vectorRight.z;
+    }
+}
+
+class Vector2 {
+    v = [0, 0];
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    get x() {
+        return this.v[0];
+    }
+    
+    set x(value) {
+        this.v[0] = value;
+    }
+
+    get y() {
+        return this.v[1];
+    }
+
+    set y(value) {
+        this.v[1] = value;
+    }
+
+    length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+}
+
 let WebGLModelManager = function() {
     var projectionMatrix = new Matrix4();
     var modelViewMatrix = new Matrix4();
 
+    var modelViewStack = [];
+
     var modelViewProjectionMatrix = function() {
-        return Matrix4.multiply(WebGLModelManager.projectionMatrix, WebGLModelManager.modelViewMatrix);
+        return Matrix4.multiply(WebGLModelManager.projectionMatrix, modelViewMatrix);
     }
 
     var normalMatrix = function() {
-        return WebGLModelManager.modelViewMatrix.matrix4GetMatrix3().getInverse().transpose();
+        return modelViewMatrix.matrix4GetMatrix3().getInverse().transpose();
     }
+
+    var push = function() {
+        modelViewStack.push(new Matrix4());
+    }
+
+    var pop = function() {
+        modelViewStack.pop();
+    }
+
+    var multiplyMatrix4 = function(matrix) {
+        var m = modelViewStack[modelViewStack.length - 1];
+        modelViewStack[modelViewStack.length - 1] = Matrix4.multiply(m, matrix);
+    }
+
+    var updateModelViewMatrix = function() {
+        modelViewMatrix = modelViewStack[modelViewStack.length - 1].copy();
+    }
+
     return {
         projectionMatrix: projectionMatrix,
-        modelViewMatrix: modelViewMatrix,
         modelViewProjectionMatrix: modelViewProjectionMatrix,
-        normalMatrix: normalMatrix
+        normalMatrix: normalMatrix,
+        push: push,
+        pop: pop,
+        multiplyMatrix4: multiplyMatrix4,
+        updateModelViewMatrix: updateModelViewMatrix
     }
 }();
 
-export {Matrix4, Matrix3, WebGLModelManager};
+export {Matrix4, Matrix3, Vector3, Vector2, WebGLModelManager};

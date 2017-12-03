@@ -107,7 +107,11 @@ export class WebGL {
      */
     getWebGLContext(canvas, opt_debug) {
         // Get the rendering context for WebGL
-        var gl = WebGLUtils.setupWebGL(canvas);
+        var gl = WebGLUtils.setupWebGL(canvas, {
+            antialias: true,
+            depth: false,
+            alpha: false
+        });
         if (!gl) return null;
 
         // if opt_debug is explicitly false, create the context for debugging
@@ -118,4 +122,71 @@ export class WebGL {
         return gl;
     }
 
+    loadImageTexture(gl, url, callback) {
+        var image = new Image();
+        var self = this;
+        image.onload = function() {
+            if (!self.isPowerOfTwo(image.width) || !self.isPowerOfTwo(image.height)) {
+                // Scale up the texture to the next highest power of two dimensions.
+                var canvas = document.createElement("canvas");
+                canvas.width = self.nextHighestPowerOfTwo(image.width);
+                canvas.height = self.nextHighestPowerOfTwo(image.height);
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                image = canvas;
+            }
+    
+            var texture = gl.createTexture();
+            // 绑定纹理
+            gl.bindTexture(gl.TEXTURE_2D, texture)
+            // 对纹理图像进行y轴翻转
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+            // 配置纹理参数
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            // 生成mipmap
+            gl.generateMipmap(gl.TEXTURE_2D);
+            
+            gl.bindTexture(gl.TEXTURE_2D, null);
+            
+            callback(texture);
+        }
+        image.src = url;
+    }
+
+    isPowerOfTwo(x) {
+        return (x & (x - 1)) == 0;
+    }
+
+    nextHighestPowerOfTwo(x) {
+        --x;
+        for (var i = 1; i < 32; i <<= 1) {
+            x = x | x >> i;
+        }
+        return x + 1;
+    }
+
+    resize(gl) {
+        var realToCSSPixels = window.devicePixelRatio;
+
+        // Lookup the size the browser is displaying the canvas in CSS pixels
+        // and compute a size needed to make our drawingbuffer match it in
+        // device pixels.
+        var displayWidth  = Math.floor(gl.canvas.clientWidth  * realToCSSPixels);
+        var displayHeight = Math.floor(gl.canvas.clientHeight * realToCSSPixels);
+
+        // Check if the canvas is not the same size.
+        if (gl.canvas.width  !== displayWidth ||
+            gl.canvas.height !== displayHeight) {
+
+            // Make the canvas the same size
+            gl.canvas.width  = displayWidth;
+            gl.canvas.height = displayHeight;
+        }
+
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    }
 }
