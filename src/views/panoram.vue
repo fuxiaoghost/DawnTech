@@ -22,7 +22,7 @@ export default {
             gl: null,
             fsh: "/assets/shaders/panoram.fsh",
             vsh: "/assets/shaders/panoram.vsh",
-            pic: "/assets/images/IRIS360.jpg",
+            pic: "/assets/images/thetav.jpg",
             texture: null,
             verticesSizes: null,
             start: null,
@@ -108,7 +108,7 @@ export default {
                     // clear canvas
                     self.clearCanvas();
                     // get sphere model
-                    self.verticesSizes = sphere.create(30, 60);
+                    self.verticesSizes = sphere.create(50, 100);
                     // get texture
                     webgl.loadImageTexture(gl, self.pic, function(texture) {   
                         self.texture = texture;

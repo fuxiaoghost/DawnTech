@@ -1,4 +1,8 @@
 export let sphere = function() {
+    var epsilon = Math.PI * 10/180; // 误差
+    var mmax = Math.PI/2 - epsilon;
+    var mmaxvalue = Math.log(Math.tan(mmax) + 1.0/Math.cos(mmax))
+    var ts = (Math.PI/2 - epsilon)/(Math.PI/2);
     var createSphere = function(hslice, vslice) {
         // return  new Float32Array([
         //     // 顶点坐标， 纹理坐标
@@ -56,8 +60,14 @@ export let sphere = function() {
         return {x: x, y: y, z: z};
     }
     var getSTTheta = function(theta, fai) {
+        // 墨卡托坐标
         var s = 0.5 - (fai)/(2 * Math.PI);
-        var t = 1 - (theta)/ Math.PI;
+        //[-π/2,π/2]
+        var mtheta = -(theta - Math.PI/2) * ts;
+        var t = Math.log(Math.tan(mtheta) + 1.0/Math.cos(mtheta))
+        t = 0.5 + 0.5 * t/mmaxvalue;
+        // 线性变化
+        // t = 1 - (theta)/ Math.PI;
         return {s: s, t: t};
     }
     return {
