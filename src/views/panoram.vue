@@ -10,6 +10,7 @@
 import foot from "../components/foot.vue";
 import Vue from 'vue';
 import {Matrix4, Matrix3, Vector2, WebGLModelManager} from "../business/webgl/WebGLModelManager.js";
+import { WebGLAnimation, AnimationValue} from '../business/webgl/WebGLAnimation.js';
 import {sphere} from "../business/sphere.js"
 import {Trackball} from "../business/trackball.js"
 export default {
@@ -27,7 +28,8 @@ export default {
             verticesSizes: null,
             start: null,
             trackball: null,
-            isdown: false
+            isdown: false,
+            animation: null
         };
     },
     mounted: function() {
@@ -50,7 +52,7 @@ export default {
             // event
             window.onresize = () => {
                 self.resize();
-                self.step();
+                self.stepOnce();
             };
 
             canvas.onmousedown = function (ev) {
@@ -61,6 +63,7 @@ export default {
                 var point = self.pointOf(ev, canvas);
                 self.trackball.touchDown(point);
                 self.step();
+                console.log("mousedown");
             }
             canvas.onmousemove = function (ev) {
                 if (ev.button !== 0) {
@@ -69,7 +72,6 @@ export default {
                 if (self.isdown) {
                     var point = self.pointOf(ev, canvas);
                     self.trackball.touchMove(point);
-                    self.step();
                 }
             }
             canvas.onmouseup = function (ev) {
@@ -79,22 +81,26 @@ export default {
                 self.isdown = false;
                 var point = self.pointOf(ev, canvas);
                 self.trackball.touchEnd(point);
-                self.step();
+                self.stopStep();
+                console.log("mouseup");
             }
             canvas.onmouseout = function(ev) {
                 if (ev.button !== 0) {
                     return;
                 }
-                self.isdown = false;
-                var point = self.pointOf(ev, canvas);
-                self.trackball.touchEnd(point);
-                self.step();
+                if(self.isdown) {
+                    self.isdown = false;
+                    var point = self.pointOf(ev, canvas);
+                    self.trackball.touchEnd(point);
+                    self.stopStep();
+                    console.log("mouseout");
+                }
             }
             canvas.ondblclick = function() {
                 self.trackball.doscale();
                 console.log(self.trackball.degreeScale());
                 self.updateProjectionMatrix();
-                self.step();
+                self.stepOnce();
             }
         }
     },
@@ -113,7 +119,7 @@ export default {
                     webgl.loadImageTexture(gl, self.pic, function(texture) {   
                         self.texture = texture;
                         self.resize();
-                        self.step();
+                        self.stepOnce();
                     });
                 };
             });
@@ -130,11 +136,21 @@ export default {
             this.updateProjectionMatrix();
         },
         step: function(timestamp) {
-            // console.log(timestamp - this.start);
+            var duration = (timestamp - this.start)/1000;
             this.start = timestamp;
+            WebGLAnimation.animationTimerStep(duration);
+            this.stepOnce();
+            this.animation = window.requestAnimationFrame(this.step);
+            console.log("step");
+        },
+        stepOnce: function() {
+            // WebGLAnimation.animationTimerStep(duration);
             this.updateModelMatrix();
             this.draw();
-            // window.requestAnimationFrame(this.step);
+        },
+        stopStep: function() {
+            window.cancelAnimationFrame(this.animation);
+            this.stepOnce();
         },
         updateProjectionMatrix: function() {
             var scale =  this.trackball.degreeScale();
