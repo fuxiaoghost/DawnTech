@@ -1,9 +1,22 @@
 <template>
     <div class="panoram">
-        <canvas class="canvas" ref="webgl">
+        <span class="enter" v-if="!mobile" v-on:click="enterFullScreen">{{fullscreen}}</span>
+        <canvas class="canvas" ref="webgl"
+            
+            v-on:touchmove='touchmove' 
+            v-on:touchstart='touchdown'
+            v-on:touchend='touchup'
+            v-on:touchcancel='touchcancel'
+            
+            v-on:dblclick='touchdouble'
+            v-on:mousedown='touchdown'
+            v-on:mousemove='touchmove'
+            v-on:mouseup='touchup'
+            v-on:mouseout='touchcancel'
+
+            >
             Please use the browser supporting "canvas"
         </canvas>
-        <foot></foot>
     </div>
 </template>
 <script>
@@ -13,35 +26,44 @@ import {Matrix4, Matrix3, Vector2, WebGLModelManager} from "../business/webgl/We
 import { WebGLAnimation, AnimationValue} from '../business/webgl/WebGLAnimation.js';
 import {sphere} from "../business/sphere.js"
 import {Trackball} from "../business/trackball.js"
+import adjust from "../business/adjust.js";
 export default {
     components: {
         foot
     },
     data: function() {
         return {
+            canvas: null,
             webgl: null,
             gl: null,
             fsh: "/assets/shaders/panoram.fsh",
             vsh: "/assets/shaders/panoram.vsh",
-            pic: "/assets/images/thetav.jpg",
+            pic: (adjust.isMobile() ? "/assets/images/thetav_s.jpg" : "/assets/images/thetav.jpg"),
             texture: null,
             verticesSizes: null,
             start: null,
             trackball: null,
             isdown: false,
-            animation: null
+            animation: null,
+            stoptimes: 0,
+            fullscreen: "全屏"
         };
+    },
+    computed: {
+        mobile: function() {
+            return adjust.isMobile();
+        }
     },
     mounted: function() {
         if(process.BROWSER) {
             var self = this;
-            let canvas = this.$refs.webgl;
+            this.canvas = this.$refs.webgl;
             this.trackball = new Trackball();
             
             // WebGL
             System.import('../business/webgl/WebGL.js').then(function(modulel){
                 self.webgl = new modulel.WebGL();
-                self.gl = self.webgl.getWebGLContext(canvas, false);
+                self.gl = self.webgl.getWebGLContext(self.canvas, false);
                 if (!self.gl) {
                     console.log('Faild to get the rendering context for WebGL');
                     return;
@@ -55,56 +77,81 @@ export default {
                 self.stepOnce();
             };
 
-            canvas.onmousedown = function (ev) {
-                if (ev.button !== 0) {
-                    return;
-                }
-                self.isdown = true;
-                var point = self.pointOf(ev, canvas);
-                self.trackball.touchDown(point);
-                self.step();
-                console.log("mousedown");
-            }
-            canvas.onmousemove = function (ev) {
-                if (ev.button !== 0) {
-                    return;
-                }
-                if (self.isdown) {
-                    var point = self.pointOf(ev, canvas);
-                    self.trackball.touchMove(point);
-                }
-            }
-            canvas.onmouseup = function (ev) {
-                if (ev.button !== 0) {
-                    return;
-                }
-                self.isdown = false;
-                var point = self.pointOf(ev, canvas);
-                self.trackball.touchEnd(point);
-                self.stopStep();
-                console.log("mouseup");
-            }
-            canvas.onmouseout = function(ev) {
-                if (ev.button !== 0) {
-                    return;
-                }
-                if(self.isdown) {
-                    self.isdown = false;
-                    var point = self.pointOf(ev, canvas);
-                    self.trackball.touchEnd(point);
-                    self.stopStep();
-                    console.log("mouseout");
-                }
-            }
-            canvas.ondblclick = function() {
-                self.trackball.doscale();
-                console.log(self.trackball.degreeScale());
-                self.updateProjectionMatrix();
-                self.stepOnce();
+            if (this.isFullScreen()) {
+                this.fullscreen = "退出全屏";
+            }else {
+                this.fullscreen = "全屏显示";
             }
         }
     },
     methods: {
+        touchdown: function(ev) {
+            this.startStep();
+            this.isdown = true;
+            var point = this.pointOf(ev, this.canvas);
+            this.trackball.touchDown(point);
+        },
+        touchmove: function(ev) {
+            event.preventDefault();
+            if (this.isdown) {
+                var point = this.pointOf(ev, this.canvas);
+                this.trackball.touchMove(point);
+            }
+        },
+        touchup: function(ev) {
+            this.isdown = false;
+            var point = this.pointOf(ev, this.canvas);
+            this.trackball.touchEnd(point);
+            this.stopStep();
+        },
+        touchcancel: function(ev) {
+            if(this.isdown) {
+                this.isdown = false;
+                var point = this.pointOf(ev, this.canvas);
+                this.trackball.touchEnd(point);
+                this.stopStep();
+            }
+        },
+        touchdouble: function(ev) {
+            this.startStep();
+            this.trackball.doscale();
+            console.log(this.trackball.degreeScale());
+            this.updateProjectionMatrix();
+            this.stopStep();
+        },
+        //进入全屏
+        enterFullScreen: function() {
+            if(!this.isFullScreen()) {
+                var de = document.documentElement;
+                if (de.requestFullscreen) {
+                    de.requestFullscreen();
+                } else if (de.mozRequestFullScreen) {
+                    de.mozRequestFullScreen();
+                } else if (de.webkitRequestFullScreen) {
+                    de.webkitRequestFullScreen();
+                }
+                this.fullscreen = "退出全屏";
+            }else {
+                var de = document;
+                if (de.exitFullscreen) {
+                    de.exitFullscreen();
+                } else if (de.mozCancelFullScreen) {
+                    de.mozCancelFullScreen();
+                } else if (de.webkitCancelFullScreen) {
+                    de.webkitCancelFullScreen();
+                }
+                this.fullscreen = "全屏显示";
+            }
+            
+        },
+        isFullScreen: function() {
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) { 
+                // 非全屏状态
+                return false;
+            } else { // 全屏状态
+                return true;
+            }
+        },
         panoram: function () {
             var webgl = this.webgl;
             var gl = this.gl;
@@ -119,38 +166,46 @@ export default {
                     webgl.loadImageTexture(gl, self.pic, function(texture) {   
                         self.texture = texture;
                         self.resize();
+                        self.animation = window.requestAnimationFrame(self.step);
                         self.stepOnce();
                     });
                 };
             });
         },
         pointOf: function(ev, canvas) {
-            var rect = ev.target.getBoundingClientRect();
-            // var x = ((ev.clientX - rect.left) - canvas.width / 2) / (canvas.width / 2);
-            // var y = (canvas.height / 2 - (ev.clientY - rect.top)) / (canvas.height / 2);
-            return new Vector2(Math.max(0, Math.min(canvas.width, ev.offsetX)), Math.max(0, Math.min(canvas.height, ev.offsetY)));
+            var x = ev.offsetX == undefined ? ev.layerX : ev.offsetX;
+            var y = ev.offsetY == undefined ? ev.layerY : ev.offsetY;
+            return new Vector2(Math.max(0, Math.min(canvas.clientWidth, x)), Math.max(0, Math.min(canvas.clientHeight, y)));
         },
         resize: function() {
             this.webgl.resize(this.gl);
-            this.trackball.layoutSize(new Vector2(this.gl.canvas.width, this.gl.canvas.height));
-            this.updateProjectionMatrix();
+            this.trackball.layoutSize(new Vector2(this.gl.canvas.clientWidth, this.gl.canvas.clientHeight));
         },
         step: function(timestamp) {
+            this.animation = window.requestAnimationFrame(this.step);
+            if(this.timestamp > 0) {
+                this.timestamp--;
+            }
+            if(this.timestamp === 0) {
+                // this.start = null;
+                return;
+            }
             var duration = (timestamp - this.start)/1000;
             this.start = timestamp;
             WebGLAnimation.animationTimerStep(duration);
-            this.stepOnce();
-            this.animation = window.requestAnimationFrame(this.step);
-            console.log("step");
-        },
-        stepOnce: function() {
-            // WebGLAnimation.animationTimerStep(duration);
+            this.updateProjectionMatrix();
             this.updateModelMatrix();
             this.draw();
         },
+        stepOnce: function() {
+            // WebGLAnimation.animationTimerStep(duration);
+            this.timestamp = 5;
+        },
+        startStep: function() {
+            this.timestamp = -1;
+        },
         stopStep: function() {
-            window.cancelAnimationFrame(this.animation);
-            this.stepOnce();
+            this.timestamp = 600;
         },
         updateProjectionMatrix: function() {
             var scale =  this.trackball.degreeScale();
@@ -217,13 +272,33 @@ export default {
 };
 </script>
 <style lang="sass">
-.panoram {
-    width: 100%;
+body {
+    overflow: hidden;
+}
+.page {
+    padding: 0px;
     height: 100%;
-    .canvas {
+    .panoram {
         width: 100%;
         height: 100%;
-        margin: 0px;
+        .canvas {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+        }
+        .enter {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: block;
+            height: 40px;
+            font-size: 20px;
+            line-height: 40px;
+            text-align: center;
+            color: white;
+            position:absolute;
+            width: 100%;
+        }
     }
 }
+
 </style>

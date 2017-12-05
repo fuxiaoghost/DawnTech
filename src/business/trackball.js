@@ -4,14 +4,17 @@ import { WebGLAnimation, AnimationValue} from './webgl/WebGLAnimation.js';
 export class Trackball {
     epsilon = 1.0e-5; // 误差
     params = {
-        startX: new Vector3(),      // 手势起始位置三维坐标，以X坐标为准
-        endX: new Vector3(),        // 手势结束位置三维坐标，以X坐标为准
-        startY: new Vector3(),      // 手势起始位置三维坐标，以Y坐标为准
-        endY: new Vector3(),        // 手势结束位置三维坐标，以Y坐标为准
+        startX: new Vector3(0, 0, 0),      // 手势起始位置三维坐标，以X坐标为准
+        endX: new Vector3(0, 0, 0),        // 手势结束位置三维坐标，以X坐标为准
+        startY: new Vector3(0, 0, 0),      // 手势起始位置三维坐标，以Y坐标为准
+        endY: new Vector3(0, 0, 0),        // 手势结束位置三维坐标，以Y坐标为准
         adjustWidth: 0,             // 屏幕宽度
         adjustHeight: 0,            // 屏幕高度
-        startPoint: new Vector2(),  // 起始位置二位坐标
-        endPoint: new Vector2(),    // 结束位置二位坐标
+        startPoint: new Vector2(0, 0),  // 起始位置二位坐标
+        endPoint: new Vector2(0, 0),    // 结束位置二位坐标
+        timestamp: 0,               // 时间戳
+        move: new Vector2(0, 0),        // 位移
+        timeinterval: 0,            // 时间间隔
         theta: 0,                   // 绕任意轴旋转角度
         fai: 0,                     // 绕X轴旋转角度
         startTheta: 0,              // 记录每次手势开始时的旋转角度
@@ -25,10 +28,10 @@ export class Trackball {
     }
 
     layoutSize(size) {
-        this.params.startX = new Vector3();
-        this.params.endX = new Vector3();
-        this.params.startY = new Vector3();
-        this.params.endY = new Vector3();
+        this.params.startX = new Vector3(0, 0, 0);
+        this.params.endX = new Vector3(0, 0, 0);
+        this.params.startY = new Vector3(0, 0, 0);
+        this.params.endY = new Vector3(0, 0, 0);
         this.params.adjustWidth = size.x;
         this.params.adjustHeight = size.y;
         this.params.theta = new AnimationValue(0);
@@ -37,7 +40,7 @@ export class Trackball {
         this.params.startFai = 0.0;
         this.params.lastScale = 1.0;
         this.params.startScale = 1.0;
-        this.params.scale = 1.0;
+        this.params.scale = new AnimationValue(1.0);
     }
 
     mapToSphere(point) {
@@ -49,7 +52,7 @@ export class Trackball {
 
         // 坐标映射到[-1,1]
         var max = Math.max(this.params.adjustHeight, this.params.adjustWidth);
-        max = (this.params.scale * 3 - 2) * max * 2/3;
+        max = (this.params.scale.value * 3 - 2) * max * 2/3;
 
         tempPoint.x = tempPoint.x / max;
         tempPoint.y = tempPoint.y / max;
@@ -75,9 +78,16 @@ export class Trackball {
         this.params.startY = this.mapToSphere(this.params.startPoint);
         this.params.startTheta = this.params.theta.value;
         this.params.startFai = this.params.fai.value;
+        this.params.move = new Vector2(0, 0);
+        this.params.timeinterval = 1;
+        this.params.endPoint = new Vector2(point.x, point.y);
+        this.params.timestamp = new Date().getTime();
     }
 
     touchMove(point) {
+        this.params.timeinterval = new Date().getTime() - this.params.timestamp;
+        this.params.timestamp = new Date().getTime();
+        this.params.move = new Vector2(point.x - this.params.endPoint.x, point.y - this.params.endPoint.y);
         this.params.endPoint = new Vector2(point.x, point.y);
         this.params.endX = this.mapToSphere(new Vector2(this.params.endPoint.x, this.params.startPoint.y));
         this.params.endY = this.mapToSphere(new Vector2(this.params.startPoint.x, this.params.endPoint.y));
@@ -116,13 +126,15 @@ export class Trackball {
         }
         var tempTheta = this.params.startTheta + theta;
         // [GLAnimationManager animateEaseOutWithDuration:0.3 valueFrom:&params.theta valueTo:tempTheta];
-        WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.theta, tempTheta);
+        WebGLAnimation.animateEaseOutWithDuration(0.2, this.params.theta, tempTheta);
         // this.params.theta = tempTheta;
     }
 
     touchEnd(point, velocity) {
         if(velocity == null) {
-            velocity = new Vector2(0, 0);
+            // velocity = new Vector2((point.x - this.params.endPoint.x)/(timestamp - this.params.timestamp), (point.y - this.params.endPoint.y)/(timestamp - this.params.timestamp))
+            velocity = new Vector2(800 * this.params.move.x/this.params.timeinterval, 800 *this.params.move.y/this.params.timeinterval);
+            // console.log(velocity.x, velocity.y);
         }
         var magnitudeX = Math.abs(velocity.x);
         var magnitudeY = Math.abs(velocity.y);
@@ -132,14 +144,14 @@ export class Trackball {
         var slideFactorX = 0.1 * slideMultX;
         var slideFactorY = 0.1 * slideMultY;
 
-        var tempFai = this.params.fai.value - velocity.y * slideFactorY * (Math.PI/2) / this.params.adjustHeight / (this.params.scale * 3 - 2);
+        var tempFai = this.params.fai.value - velocity.y * slideFactorY * (Math.PI/2) / this.params.adjustHeight / (this.params.scale.value * 3 - 2);
         if (tempFai > Math.PI/2) {
             tempFai = Math.PI/2;
         } else if (tempFai < -Math.PI/2) {
             tempFai = -Math.PI/2;
         }
 
-        var tempTheta = this.params.theta.value - velocity.x * slideFactorX * (Math.PI/2) / this.params.adjustWidth / (this.params.scale * 3 - 2);
+        var tempTheta = this.params.theta.value - velocity.x * slideFactorX * (Math.PI/2) / this.params.adjustWidth / (this.params.scale.value * 3 - 2);
 
         // 剔除nan
         if (velocity.x == 0) {
@@ -148,7 +160,7 @@ export class Trackball {
         if (velocity.y == 0) {
             slideFactorY = 0.0;
         } else {
-            slideFactorY = (this.params.fai.value - tempFai) * this.params.adjustHeight * (this.params.scale * 3 - 2) / velocity.y / (Math.PI/2);
+            slideFactorY = (this.params.fai.value - tempFai) * this.params.adjustHeight * (this.params.scale.value * 3 - 2) / velocity.y / (Math.PI/2);
         }
         // [GLAnimationManager animateEaseOutWithDuration:slideFactorY * 2 valueFrom:&params.fai valueTo:tempFai];
         WebGLAnimation.animateEaseOutWithDuration(slideFactorY * 2, this.params.fai, tempFai);
@@ -159,7 +171,7 @@ export class Trackball {
     }
 
     pinchDown(scale) {
-        this.params.startScale = this.params.scale;
+        this.params.startScale = this.params.scale.value;
         this.params.lastScale = scale;
         //[GLAnimationManager stopAllAnimation];
     }
@@ -179,14 +191,14 @@ export class Trackball {
         }
 
         // [GLAnimationManager animateEaseOutWithDuration:0.3 valueFrom:&params.scale valueTo:tempScale];
-        this.params.scale = tempScale;
+        this.params.scale.value = tempScale;
     }
 
     doscale() {
-        if(this.params.scale > 1) {
-            this.params.scale = 1;
+        if(this.params.scale.value > 1) {
+            WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.scale, 1.0);
         }else {
-            this.params.scale = 1.5;
+            WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.scale, 1.5);
         }
     }
 
@@ -205,7 +217,7 @@ export class Trackball {
     }
 
     degreeScale() {
-        return this.params.scale;
+        return this.params.scale.value;
     }
 
     // 绕任意轴旋转
