@@ -194,6 +194,12 @@ class Vector3 {
     static dotProduct(vectorLeft, vectorRight) {
         return vectorLeft.x * vectorRight.x + vectorLeft.y * vectorRight.y + vectorLeft.z * vectorRight.z;
     }
+
+    static crossProduct(vectorLeft, vectorRight) {
+       return new Vector3(vectorLeft.v[1] * vectorRight.v[2] - vectorLeft.v[2] * vectorRight.v[1],
+                          vectorLeft.v[2] * vectorRight.v[0] - vectorLeft.v[0] * vectorRight.v[2],
+                          vectorLeft.v[0] * vectorRight.v[1] - vectorLeft.v[1] * vectorRight.v[0]);
+    }
 }
 
 class Vector2 {

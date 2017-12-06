@@ -1,3 +1,4 @@
+//https://www.khronos.org/opengl/wiki/Object_Mouse_Trackball
 import { Matrix4, Matrix3, Vector3, Vector2 } from './webgl/WebGLModelManager.js';
 import { WebGLAnimation, AnimationValue} from './webgl/WebGLAnimation.js';
 
@@ -45,7 +46,7 @@ export class Trackball {
 
     mapToSphere(point) {
         var tempPoint = new Vector2(point.x, point.y);
-
+        var r = 1.0;
         // 调整原点位置和坐标轴方向
         tempPoint.x = tempPoint.x - this.params.adjustWidth/2;
         tempPoint.y = this.params.adjustHeight/2 - tempPoint.y;
@@ -61,14 +62,11 @@ export class Trackball {
         var length = tempPoint.x * tempPoint.x + tempPoint.y * tempPoint.y; 
 
         // 如果点超出球的边界
-        if (length > 1.0) {
-            // 强制限定到边界
-            var vector = new Vector3(tempPoint.x, tempPoint.y, 0.0);
-            // 单位化
-            return vector.normalize();
+        if (length > r * r/2) {
+            return (new Vector3(tempPoint.x , tempPoint.y, r * r/2/(Math.sqrt(length)))).normalize();
         } else {
             // 点不超出边界
-            return new Vector3(tempPoint.x, tempPoint.y, Math.sqrt(1.0 - length));
+            return (new Vector3(tempPoint.x, tempPoint.y, Math.sqrt(1.0 - length))).normalize();
         }
     }
 
@@ -112,8 +110,6 @@ export class Trackball {
         }
 
         WebGLAnimation.animateEaseOutWithDuration(0.2, this.params.fai, tempFai);
-        // [GLAnimationManager animateEaseOutWithDuration:0.2 valueFrom:&params.fai valueTo:tempFai];
-        // this.params.fai = tempFai;
 
         // 变动轴旋转角度
         if (Math.abs(this.params.endX.x - this.params.startX.x) < this.epsilon) {
@@ -125,17 +121,25 @@ export class Trackball {
             }
         }
         var tempTheta = this.params.startTheta + theta;
-        // [GLAnimationManager animateEaseOutWithDuration:0.3 valueFrom:&params.theta valueTo:tempTheta];
         WebGLAnimation.animateEaseOutWithDuration(0.2, this.params.theta, tempTheta);
-        // this.params.theta = tempTheta;
     }
 
     touchEnd(point, velocity) {
         if(velocity == null) {
-            // velocity = new Vector2((point.x - this.params.endPoint.x)/(timestamp - this.params.timestamp), (point.y - this.params.endPoint.y)/(timestamp - this.params.timestamp))
             velocity = new Vector2(800 * this.params.move.x/this.params.timeinterval, 800 *this.params.move.y/this.params.timeinterval);
-            // console.log(velocity.x, velocity.y);
         }
+        if(velocity.x > 10000) {
+            velocity.x = 10000;
+        }else if(velocity.x < -10000) {
+            velocity.x = -10000;
+        }
+
+        if(velocity.y > 10000) {
+            velocity.y = 10000;
+        }else if(velocity.y < -10000) {
+            velocity.y = -10000;
+        }
+
         var magnitudeX = Math.abs(velocity.x);
         var magnitudeY = Math.abs(velocity.y);
         // 如果长度小于200，则减少基本速度，否则增加它
@@ -162,18 +166,13 @@ export class Trackball {
         } else {
             slideFactorY = (this.params.fai.value - tempFai) * this.params.adjustHeight * (this.params.scale.value * 3 - 2) / velocity.y / (Math.PI/2);
         }
-        // [GLAnimationManager animateEaseOutWithDuration:slideFactorY * 2 valueFrom:&params.fai valueTo:tempFai];
         WebGLAnimation.animateEaseOutWithDuration(slideFactorY * 2, this.params.fai, tempFai);
-        // this.params.fai = tempFai;
-        // [GLAnimationManager animateEaseOutWithDuration:slideFactorX * 2 valueFrom:&params.theta valueTo:tempTheta];
         WebGLAnimation.animateEaseOutWithDuration(slideFactorX * 2, this.params.theta, tempTheta);
-        // this.params.theta = tempTheta;
     }
 
     pinchDown(scale) {
         this.params.startScale = this.params.scale.value;
         this.params.lastScale = scale;
-        //[GLAnimationManager stopAllAnimation];
     }
 
     pinchMove(scale) {
@@ -189,8 +188,6 @@ export class Trackball {
         } else if (tempScale < 1.0) {
             tempScale = 1.0;
         }
-
-        // [GLAnimationManager animateEaseOutWithDuration:0.3 valueFrom:&params.scale valueTo:tempScale];
         this.params.scale.value = tempScale;
     }
 
