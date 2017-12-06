@@ -35,10 +35,6 @@ export default {
       {
         title: "手记",
         url: "/note"
-      },
-      {
-        title: "Panoram",
-        url: "/panoram"
       }
     ];
   },

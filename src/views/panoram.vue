@@ -49,6 +49,13 @@ export default {
             fullscreen: "全屏"
         };
     },
+    preFetch: function(store) {
+        var header = {
+            title: "全景模型",
+            desc: "全景模型"
+        }
+        store.dispatch("header", header);
+    },
     computed: {
         mobile: function() {
             return adjust.isMobile();
