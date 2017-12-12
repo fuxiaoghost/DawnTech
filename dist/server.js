@@ -2823,11 +2823,7 @@ var sphere = exports.sphere = function () {
     };
     var getSTTheta = function getSTTheta(theta, fai) {
         var s = 0.5 - fai / (2 * Math.PI);
-
-        var mtheta = -(theta - Math.PI / 2) * ts;
-        var t = Math.log(Math.tan(mtheta) + 1.0 / Math.cos(mtheta));
-        t = 0.5 + 0.5 * t / mmaxvalue;
-
+        var t = 1 - theta / Math.PI;
         return { s: s, t: t };
     };
     return {
