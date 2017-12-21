@@ -1,5 +1,5 @@
 //https://www.khronos.org/opengl/wiki/Object_Mouse_Trackball
-import { Matrix4, Matrix3, Vector3, Vector2 } from './webgl/WebGLModelManager.js';
+import { Matrix4, Matrix3, Vector4, Vector3, Vector2 } from './webgl/WebGLModelManager.js';
 import { WebGLAnimation, AnimationValue} from './webgl/WebGLAnimation.js';
 
 export class Trackball {
@@ -24,6 +24,8 @@ export class Trackball {
         startScale: 0,               // 记录开始缩放比例
         lastScale: 0                // 记录上一次缩放比例
     }
+    projectionMatrix = new Matrix4();
+    
     
     constructor() {
     }
@@ -41,7 +43,7 @@ export class Trackball {
         this.params.startFai = 0.0;
         this.params.lastScale = 1.0;
         this.params.startScale = 1.0;
-        this.params.scale = new AnimationValue(1.0);
+        this.params.scale = new AnimationValue(1.5);
     }
 
     mapToSphere(point) {
@@ -53,21 +55,28 @@ export class Trackball {
 
         // 坐标映射到[-1,1]
         var max = Math.max(this.params.adjustHeight, this.params.adjustWidth);
-        max = (this.params.scale.value * 3 - 2) * max * 2/3;
+        // max = (this.params.scale.value * 3 - 2) * max * 2/3;
 
-        tempPoint.x = tempPoint.x / max;
-        tempPoint.y = tempPoint.y / max;
+        tempPoint.x = tempPoint.x / this.params.adjustHeight;
+        tempPoint.y = tempPoint.y / this.params.adjustHeight;
 
         // x * x + y * y
         var length = tempPoint.x * tempPoint.x + tempPoint.y * tempPoint.y; 
 
-        // 如果点超出球的边界
+        var vector = null;
         if (length > r * r/2) {
-            return (new Vector3(tempPoint.x , tempPoint.y, r * r/2/(Math.sqrt(length)))).normalize();
+            // 如果点超出球的边界
+            vector = new Vector3(tempPoint.x , tempPoint.y, r * r/2/(Math.sqrt(length)));
         } else {
             // 点不超出边界
-            return (new Vector3(tempPoint.x, tempPoint.y, Math.sqrt(1.0 - length))).normalize();
+            vector = new Vector3(tempPoint.x, tempPoint.y, Math.sqrt(1.0 - length));
         }
+        // var matrix = Matrix4.multiply(this.projectionMatrix, Matrix4.makeScale(scale, scale, scale));
+        // var transVector = Matrix4.multiplyVector4(matrix, new Vector4(vector.x, vector.y, vector.z, 1.0));
+        // vector.x = transVector.x;
+        // vector.y = transVector.y;
+        // vector.z = transVector.x;
+        return vector.normalize();
     }
 
     touchDown(point) {
@@ -109,7 +118,7 @@ export class Trackball {
             tempFai = -Math.PI/2;
         }
 
-        WebGLAnimation.animateEaseOutWithDuration(0.2, this.params.fai, tempFai);
+        WebGLAnimation.animateEaseOutWithDuration(0.1, this.params.fai, tempFai);
 
         // 变动轴旋转角度
         if (Math.abs(this.params.endX.x - this.params.startX.x) < this.epsilon) {
@@ -121,7 +130,7 @@ export class Trackball {
             }
         }
         var tempTheta = this.params.startTheta + theta;
-        WebGLAnimation.animateEaseOutWithDuration(0.2, this.params.theta, tempTheta);
+        WebGLAnimation.animateEaseOutWithDuration(0.1, this.params.theta, tempTheta);
     }
 
     touchEnd(point, velocity) {
@@ -148,14 +157,14 @@ export class Trackball {
         var slideFactorX = 0.1 * slideMultX;
         var slideFactorY = 0.1 * slideMultY;
 
-        var tempFai = this.params.fai.value - velocity.y * slideFactorY * (Math.PI/2) / this.params.adjustHeight / (this.params.scale.value * 3 - 2);
+        var tempFai = this.params.fai.value - velocity.y * slideFactorY * (Math.PI/2) / this.params.adjustHeight / this.params.scale.value;
         if (tempFai > Math.PI/2) {
             tempFai = Math.PI/2;
         } else if (tempFai < -Math.PI/2) {
             tempFai = -Math.PI/2;
         }
 
-        var tempTheta = this.params.theta.value - velocity.x * slideFactorX * (Math.PI/2) / this.params.adjustWidth / (this.params.scale.value * 3 - 2);
+        var tempTheta = this.params.theta.value - velocity.x * slideFactorX * (Math.PI/2) / this.params.adjustWidth / this.params.scale.value;
 
         // 剔除nan
         if (velocity.x == 0) {
@@ -164,7 +173,7 @@ export class Trackball {
         if (velocity.y == 0) {
             slideFactorY = 0.0;
         } else {
-            slideFactorY = (this.params.fai.value - tempFai) * this.params.adjustHeight * (this.params.scale.value * 3 - 2) / velocity.y / (Math.PI/2);
+            slideFactorY = (this.params.fai.value - tempFai) * this.params.adjustHeight * (this.params.scale.value) / velocity.y / (Math.PI/2);
         }
         WebGLAnimation.animateEaseOutWithDuration(slideFactorY * 2, this.params.fai, tempFai);
         WebGLAnimation.animateEaseOutWithDuration(slideFactorX * 2, this.params.theta, tempTheta);
@@ -192,10 +201,10 @@ export class Trackball {
     }
 
     doscale() {
-        if(this.params.scale.value > 1) {
-            WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.scale, 1.0);
-        }else {
+        if(this.params.scale.value > 1.5) {
             WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.scale, 1.5);
+        }else {
+            WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.scale, 3.0);
         }
     }
 

@@ -66,6 +66,7 @@ export default {
             var self = this;
             this.canvas = this.$refs.webgl;
             this.trackball = new Trackball();
+            this.pic = "/assets/images/panorama/large/" + this.$route.params.url;
             
             // WebGL
             System.import('../business/webgl/WebGL.js').then(function(modulel){
@@ -215,12 +216,12 @@ export default {
             this.timestamp = 600;
         },
         updateProjectionMatrix: function() {
-            var scale =  this.trackball.degreeScale();
             let canvas = this.$refs.webgl;
             var width = canvas.clientWidth;
             var height = canvas.clientHeight;
             var ratio = width/height;
-            WebGLModelManager.projectionMatrix = Matrix4.makePerspective((50.0 - 40 * (scale -1)) * (Math.PI / 180), ratio, 1.0, 1000);
+            WebGLModelManager.projectionMatrix = Matrix4.makePerspective(50.0 * (Math.PI / 180), ratio, 1.0, 1000);
+            this.trackball.modelViewProjectionMatrix = WebGLModelManager.modelViewProjectionMatrix();
         },
         loadShaderFile: function (callback) {
             var gl = this.gl;
@@ -235,11 +236,14 @@ export default {
             gl.clear(gl.COLOR_BUFFER_BIT);
         },
         updateModelMatrix: function() {
+            var scale =  this.trackball.degreeScale();
             WebGLModelManager.push();
             WebGLModelManager.multiplyMatrix4(Matrix4.makeTranslation(0, 0, -1));
+            WebGLModelManager.multiplyMatrix4(Matrix4.makeScale(scale, scale, scale));
             WebGLModelManager.multiplyMatrix4(this.trackball.rotationMatrix4());
             WebGLModelManager.updateModelViewMatrix();
             WebGLModelManager.pop();
+            this.trackball.projectionMatrix = WebGLModelManager.projectionMatrix;
         },
         draw: function () {
             var gl = this.gl;

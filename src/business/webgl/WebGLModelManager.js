@@ -28,6 +28,14 @@ class Matrix4  {
 
         return m;
     }
+
+    static multiplyVector4(matrixLeft, vectorRight) {
+        return new Vector4( matrixLeft.m[0] * vectorRight.v[0] + matrixLeft.m[4] * vectorRight.v[1] + matrixLeft.m[8] * vectorRight.v[2] + matrixLeft.m[12] * vectorRight.v[3],
+            matrixLeft.m[1] * vectorRight.v[0] + matrixLeft.m[5] * vectorRight.v[1] + matrixLeft.m[9] * vectorRight.v[2] + matrixLeft.m[13] * vectorRight.v[3],
+            matrixLeft.m[2] * vectorRight.v[0] + matrixLeft.m[6] * vectorRight.v[1] + matrixLeft.m[10] * vectorRight.v[2] + matrixLeft.m[14] * vectorRight.v[3],
+            matrixLeft.m[3] * vectorRight.v[0] + matrixLeft.m[7] * vectorRight.v[1] + matrixLeft.m[11] * vectorRight.v[2] + matrixLeft.m[15] * vectorRight.v[3]);
+    }
+    
     matrix4GetMatrix3() {
         var matrix = this;
         m3.m = [ matrix.m[0], matrix.m[1], matrix.m[2], matrix.m[4], matrix.m[5], matrix.m[6], matrix.m[8], matrix.m[9], matrix.m[10] ];
@@ -53,11 +61,34 @@ class Matrix4  {
         return m;
     }
 
+    static makeOrtho(left, right, bottom, top, nearZ, farZ) {
+        var ral = right + left;
+        var rsl = right - left;
+        var tsb = top - bottom;
+        var tab = top + bottom;
+        var fan = farZ + nearZ;
+        var fsn = farZ - nearZ;
+        var m = new Matrix4();
+        m.m = [2.0 / rsl, 0.0, 0.0, 0.0,
+            0.0, 2.0 / tsb, 0.0, 0.0,
+            0.0, 0.0, -2.0 / fsn, 0.0,
+            -ral / rsl, -tab / tsb, -fan / fsn, 1.0];
+        return m;
+    }
+
     static makeTranslation(tx, ty, tz) {
         var m4 = new Matrix4();
         m4.m[12] = tx;
         m4.m[13] = ty;
         m4.m[14] = tz;
+        return m4;
+    }
+
+    static makeScale(sx, sy, sz) {
+        var m4 = new Matrix4();
+        m4.m[0] = sx;
+        m4.m[5] = sy;
+        m4.m[10] = sz;
         return m4;
     }
 
@@ -147,6 +178,71 @@ class Matrix3 {
         return this;
     }
 };
+
+class Vector4 {
+    v = [0, 0, 0, 0];
+    constructor(x, y, z, w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+    get x() {
+        return this.v[0];
+    }
+    
+    set x(value) {
+        this.v[0] = value;
+    }
+
+    get y() {
+        return this.v[1];
+    }
+
+    set y(value) {
+        this.v[1] = value;
+    }
+
+    get z() {
+        return this.v[2];
+    }
+
+    set z(value) {
+        this.v[2] = value;
+    }
+
+    get w() {
+        return this.v[3];
+    }
+
+    set w(value) {
+        this.v[3] = value;
+    }
+
+    length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z, this.w * this.w);
+    }
+
+    normalize() {
+        var scale = 1.0 / this.length();
+        this.x = this.x * scale;
+        this.y = this.y * scale;
+        this.z = this.z * scale;
+        this.w = this.w * scale;
+        return this;
+    }
+
+    static dotProduct(vectorLeft, vectorRight) {
+        return vectorLeft.x * vectorRight.x + vectorLeft.y * vectorRight.y + vectorLeft.z * vectorRight.z + vectorLeft.w * vectorRight.w;
+    }
+
+    static crossProduct(vectorLeft, vectorRight) {
+       return new Vector3(vectorLeft.v[1] * vectorRight.v[2] - vectorLeft.v[2] * vectorRight.v[1],
+                          vectorLeft.v[2] * vectorRight.v[0] - vectorLeft.v[0] * vectorRight.v[2],
+                          vectorLeft.v[0] * vectorRight.v[1] - vectorLeft.v[1] * vectorRight.v[0], 
+                          0.0);
+    }
+}
 
 class Vector3 {
     v = [0, 0, 0];
@@ -272,4 +368,4 @@ let WebGLModelManager = function() {
     }
 }();
 
-export {Matrix4, Matrix3, Vector3, Vector2, WebGLModelManager};
+export {Matrix4, Matrix3, Vector4, Vector3, Vector2, WebGLModelManager};
