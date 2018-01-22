@@ -1062,7 +1062,7 @@ exports.WebGLAnimation = WebGLAnimation;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.WebGLModelManager = exports.Vector2 = exports.Vector3 = exports.Matrix3 = exports.Matrix4 = undefined;
+exports.WebGLModelManager = exports.Vector2 = exports.Vector3 = exports.Vector4 = exports.Matrix3 = exports.Matrix4 = undefined;
 
 var _classCallCheck2 = __webpack_require__(22);
 
@@ -1123,6 +1123,11 @@ var Matrix4 = function () {
             return m;
         }
     }, {
+        key: "multiplyVector4",
+        value: function multiplyVector4(matrixLeft, vectorRight) {
+            return new Vector4(matrixLeft.m[0] * vectorRight.v[0] + matrixLeft.m[4] * vectorRight.v[1] + matrixLeft.m[8] * vectorRight.v[2] + matrixLeft.m[12] * vectorRight.v[3], matrixLeft.m[1] * vectorRight.v[0] + matrixLeft.m[5] * vectorRight.v[1] + matrixLeft.m[9] * vectorRight.v[2] + matrixLeft.m[13] * vectorRight.v[3], matrixLeft.m[2] * vectorRight.v[0] + matrixLeft.m[6] * vectorRight.v[1] + matrixLeft.m[10] * vectorRight.v[2] + matrixLeft.m[14] * vectorRight.v[3], matrixLeft.m[3] * vectorRight.v[0] + matrixLeft.m[7] * vectorRight.v[1] + matrixLeft.m[11] * vectorRight.v[2] + matrixLeft.m[15] * vectorRight.v[3]);
+        }
+    }, {
         key: "makePerspective",
         value: function makePerspective(fovyRadians, aspect, nearZ, farZ) {
             var cotan = 1.0 / Math.tan(fovyRadians / 2.0);
@@ -1132,12 +1137,34 @@ var Matrix4 = function () {
             return m;
         }
     }, {
+        key: "makeOrtho",
+        value: function makeOrtho(left, right, bottom, top, nearZ, farZ) {
+            var ral = right + left;
+            var rsl = right - left;
+            var tsb = top - bottom;
+            var tab = top + bottom;
+            var fan = farZ + nearZ;
+            var fsn = farZ - nearZ;
+            var m = new Matrix4();
+            m.m = [2.0 / rsl, 0.0, 0.0, 0.0, 0.0, 2.0 / tsb, 0.0, 0.0, 0.0, 0.0, -2.0 / fsn, 0.0, -ral / rsl, -tab / tsb, -fan / fsn, 1.0];
+            return m;
+        }
+    }, {
         key: "makeTranslation",
         value: function makeTranslation(tx, ty, tz) {
             var m4 = new Matrix4();
             m4.m[12] = tx;
             m4.m[13] = ty;
             m4.m[14] = tz;
+            return m4;
+        }
+    }, {
+        key: "makeScale",
+        value: function makeScale(sx, sy, sz) {
+            var m4 = new Matrix4();
+            m4.m[0] = sx;
+            m4.m[5] = sy;
+            m4.m[10] = sz;
             return m4;
         }
     }, {
@@ -1229,6 +1256,78 @@ var Matrix3 = function () {
 }();
 
 ;
+
+var Vector4 = function () {
+    function Vector4(x, y, z, w) {
+        (0, _classCallCheck3.default)(this, Vector4);
+        this.v = [0, 0, 0, 0];
+
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+
+    (0, _createClass3.default)(Vector4, [{
+        key: "length",
+        value: function length() {
+            return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z, this.w * this.w);
+        }
+    }, {
+        key: "normalize",
+        value: function normalize() {
+            var scale = 1.0 / this.length();
+            this.x = this.x * scale;
+            this.y = this.y * scale;
+            this.z = this.z * scale;
+            this.w = this.w * scale;
+            return this;
+        }
+    }, {
+        key: "x",
+        get: function get() {
+            return this.v[0];
+        },
+        set: function set(value) {
+            this.v[0] = value;
+        }
+    }, {
+        key: "y",
+        get: function get() {
+            return this.v[1];
+        },
+        set: function set(value) {
+            this.v[1] = value;
+        }
+    }, {
+        key: "z",
+        get: function get() {
+            return this.v[2];
+        },
+        set: function set(value) {
+            this.v[2] = value;
+        }
+    }, {
+        key: "w",
+        get: function get() {
+            return this.v[3];
+        },
+        set: function set(value) {
+            this.v[3] = value;
+        }
+    }], [{
+        key: "dotProduct",
+        value: function dotProduct(vectorLeft, vectorRight) {
+            return vectorLeft.x * vectorRight.x + vectorLeft.y * vectorRight.y + vectorLeft.z * vectorRight.z + vectorLeft.w * vectorRight.w;
+        }
+    }, {
+        key: "crossProduct",
+        value: function crossProduct(vectorLeft, vectorRight) {
+            return new Vector3(vectorLeft.v[1] * vectorRight.v[2] - vectorLeft.v[2] * vectorRight.v[1], vectorLeft.v[2] * vectorRight.v[0] - vectorLeft.v[0] * vectorRight.v[2], vectorLeft.v[0] * vectorRight.v[1] - vectorLeft.v[1] * vectorRight.v[0], 0.0);
+        }
+    }]);
+    return Vector4;
+}();
 
 var Vector3 = function () {
     function Vector3(x, y, z) {
@@ -1370,6 +1469,7 @@ var WebGLModelManager = function () {
 
 exports.Matrix4 = Matrix4;
 exports.Matrix3 = Matrix3;
+exports.Vector4 = Vector4;
 exports.Vector3 = Vector3;
 exports.Vector2 = Vector2;
 exports.WebGLModelManager = WebGLModelManager;
@@ -2311,6 +2411,7 @@ exports.default = {
             var self = this;
             this.canvas = this.$refs.webgl;
             this.trackball = new _trackball.Trackball();
+            this.pic = "/assets/images/panorama/large/" + this.$route.params.url;
 
             System.import('../business/webgl/WebGL.js').then(function (modulel) {
                 self.webgl = new modulel.WebGL();
@@ -2453,12 +2554,12 @@ exports.default = {
             this.timestamp = 600;
         },
         updateProjectionMatrix: function updateProjectionMatrix() {
-            var scale = this.trackball.degreeScale();
             var canvas = this.$refs.webgl;
             var width = canvas.clientWidth;
             var height = canvas.clientHeight;
             var ratio = width / height;
-            _WebGLModelManager.WebGLModelManager.projectionMatrix = _WebGLModelManager.Matrix4.makePerspective((50.0 - 40 * (scale - 1)) * (Math.PI / 180), ratio, 1.0, 1000);
+            _WebGLModelManager.WebGLModelManager.projectionMatrix = _WebGLModelManager.Matrix4.makePerspective(50.0 * (Math.PI / 180), ratio, 1.0, 1000);
+            this.trackball.modelViewProjectionMatrix = _WebGLModelManager.WebGLModelManager.modelViewProjectionMatrix();
         },
         loadShaderFile: function loadShaderFile(callback) {
             var gl = this.gl;
@@ -2473,11 +2574,14 @@ exports.default = {
             gl.clear(gl.COLOR_BUFFER_BIT);
         },
         updateModelMatrix: function updateModelMatrix() {
+            var scale = this.trackball.degreeScale();
             _WebGLModelManager.WebGLModelManager.push();
             _WebGLModelManager.WebGLModelManager.multiplyMatrix4(_WebGLModelManager.Matrix4.makeTranslation(0, 0, -1));
+            _WebGLModelManager.WebGLModelManager.multiplyMatrix4(_WebGLModelManager.Matrix4.makeScale(scale, scale, scale));
             _WebGLModelManager.WebGLModelManager.multiplyMatrix4(this.trackball.rotationMatrix4());
             _WebGLModelManager.WebGLModelManager.updateModelViewMatrix();
             _WebGLModelManager.WebGLModelManager.pop();
+            this.trackball.projectionMatrix = _WebGLModelManager.WebGLModelManager.projectionMatrix;
         },
         draw: function draw() {
             var gl = this.gl;
@@ -2880,6 +2984,7 @@ var Trackball = exports.Trackball = function () {
             scale: 0,
             startScale: 0,
             lastScale: 0 };
+        this.projectionMatrix = new _WebGLModelManager.Matrix4();
     }
 
     (0, _createClass3.default)(Trackball, [{
@@ -2897,7 +3002,7 @@ var Trackball = exports.Trackball = function () {
             this.params.startFai = 0.0;
             this.params.lastScale = 1.0;
             this.params.startScale = 1.0;
-            this.params.scale = new _WebGLAnimation.AnimationValue(1.0);
+            this.params.scale = new _WebGLAnimation.AnimationValue(1.5);
         }
     }, {
         key: 'mapToSphere',
@@ -2909,18 +3014,21 @@ var Trackball = exports.Trackball = function () {
             tempPoint.y = this.params.adjustHeight / 2 - tempPoint.y;
 
             var max = Math.max(this.params.adjustHeight, this.params.adjustWidth);
-            max = (this.params.scale.value * 3 - 2) * max * 2 / 3;
 
-            tempPoint.x = tempPoint.x / max;
-            tempPoint.y = tempPoint.y / max;
+
+            tempPoint.x = tempPoint.x / this.params.adjustHeight;
+            tempPoint.y = tempPoint.y / this.params.adjustHeight;
 
             var length = tempPoint.x * tempPoint.x + tempPoint.y * tempPoint.y;
 
+            var vector = null;
             if (length > r * r / 2) {
-                return new _WebGLModelManager.Vector3(tempPoint.x, tempPoint.y, r * r / 2 / Math.sqrt(length)).normalize();
+                vector = new _WebGLModelManager.Vector3(tempPoint.x, tempPoint.y, r * r / 2 / Math.sqrt(length));
             } else {
-                return new _WebGLModelManager.Vector3(tempPoint.x, tempPoint.y, Math.sqrt(1.0 - length)).normalize();
+                vector = new _WebGLModelManager.Vector3(tempPoint.x, tempPoint.y, Math.sqrt(1.0 - length));
             }
+
+            return vector.normalize();
         }
     }, {
         key: 'touchDown',
@@ -2963,7 +3071,7 @@ var Trackball = exports.Trackball = function () {
                 tempFai = -Math.PI / 2;
             }
 
-            _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(0.2, this.params.fai, tempFai);
+            _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(0.1, this.params.fai, tempFai);
 
             if (Math.abs(this.params.endX.x - this.params.startX.x) < this.epsilon) {
                 theta = 0;
@@ -2974,7 +3082,7 @@ var Trackball = exports.Trackball = function () {
                 }
             }
             var tempTheta = this.params.startTheta + theta;
-            _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(0.2, this.params.theta, tempTheta);
+            _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(0.1, this.params.theta, tempTheta);
         }
     }, {
         key: 'touchEnd',
@@ -3002,14 +3110,14 @@ var Trackball = exports.Trackball = function () {
             var slideFactorX = 0.1 * slideMultX;
             var slideFactorY = 0.1 * slideMultY;
 
-            var tempFai = this.params.fai.value - velocity.y * slideFactorY * (Math.PI / 2) / this.params.adjustHeight / (this.params.scale.value * 3 - 2);
+            var tempFai = this.params.fai.value - velocity.y * slideFactorY * (Math.PI / 2) / this.params.adjustHeight / this.params.scale.value;
             if (tempFai > Math.PI / 2) {
                 tempFai = Math.PI / 2;
             } else if (tempFai < -Math.PI / 2) {
                 tempFai = -Math.PI / 2;
             }
 
-            var tempTheta = this.params.theta.value - velocity.x * slideFactorX * (Math.PI / 2) / this.params.adjustWidth / (this.params.scale.value * 3 - 2);
+            var tempTheta = this.params.theta.value - velocity.x * slideFactorX * (Math.PI / 2) / this.params.adjustWidth / this.params.scale.value;
 
             if (velocity.x == 0) {
                 slideFactorX = 0.0;
@@ -3017,7 +3125,7 @@ var Trackball = exports.Trackball = function () {
             if (velocity.y == 0) {
                 slideFactorY = 0.0;
             } else {
-                slideFactorY = (this.params.fai.value - tempFai) * this.params.adjustHeight * (this.params.scale.value * 3 - 2) / velocity.y / (Math.PI / 2);
+                slideFactorY = (this.params.fai.value - tempFai) * this.params.adjustHeight * this.params.scale.value / velocity.y / (Math.PI / 2);
             }
             _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(slideFactorY * 2, this.params.fai, tempFai);
             _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(slideFactorX * 2, this.params.theta, tempTheta);
@@ -3048,10 +3156,10 @@ var Trackball = exports.Trackball = function () {
     }, {
         key: 'doscale',
         value: function doscale() {
-            if (this.params.scale.value > 1) {
-                _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.scale, 1.0);
-            } else {
+            if (this.params.scale.value > 1.5) {
                 _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.scale, 1.5);
+            } else {
+                _WebGLAnimation.WebGLAnimation.animateEaseOutWithDuration(0.3, this.params.scale, 3.0);
             }
         }
     }, {
@@ -5210,7 +5318,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('div', {
     staticClass: "container"
   }, _vm._l((_vm.items), function(item) {
-    return _c('a', {
+    return (item.title) ? _c('a', {
       staticClass: "blog",
       attrs: {
         "href": ("/article/" + (item.id))
@@ -5221,7 +5329,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "desc"
     }, [_vm._v(_vm._s(item.desc))]), _vm._v(" "), _c('span', {
       staticClass: "date"
-    }, [_vm._v("发布于 " + _vm._s(item.date))])])
+    }, [_vm._v("发布于 " + _vm._s(item.date))])]) : _vm._e()
   })), _vm._v(" "), _c('foot')], 1)
 },staticRenderFns: []}
 

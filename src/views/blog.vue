@@ -2,7 +2,7 @@
     <div class="home">
         <nav-bar :index="index"></nav-bar>
         <div class="container">
-            <a class="blog" v-for="item in items" :href="`/article/${item.id}`">
+            <a class="blog" v-if="item.title" v-for="item in items" :href="`/article/${item.id}`">
                 <span class="title">{{ item.title }}</span>
                 <span class="desc">{{ item.desc }}</span>
                 <span class="date">发布于 {{ item.date }}</span>
