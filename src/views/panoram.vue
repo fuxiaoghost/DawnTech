@@ -66,7 +66,7 @@ export default {
             var self = this;
             this.canvas = this.$refs.webgl;
             this.trackball = new Trackball();
-            this.pic = "/assets/images/panorama/large/" + this.$route.params.url;
+            // this.pic = "/assets/images/panorama/large/" + this.$route.params.url;
             
             // WebGL
             System.import('../business/webgl/WebGL.js').then(function(modulel){

@@ -2411,7 +2411,6 @@ exports.default = {
             var self = this;
             this.canvas = this.$refs.webgl;
             this.trackball = new _trackball.Trackball();
-            this.pic = "/assets/images/panorama/large/" + this.$route.params.url;
 
             System.import('../business/webgl/WebGL.js').then(function (modulel) {
                 self.webgl = new modulel.WebGL();
