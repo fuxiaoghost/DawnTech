@@ -10,27 +10,29 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "bn.js": "^4.11.8",
     "compression": "^1.7.2",
     "es6-promise": "^4.2.4",
+    "ethereumjs-abi": "^0.6.5",
+    "ethereumjs-tx": "^1.3.4",
+    "ethjs-util": "^0.1.6",
     "express": "^4.16.3",
     "express-http-proxy": "^1.2.0",
     "highlight.js": "^9.10.0",
+    "keccak": "^1.4.0",
     "marked": "^0.3.19",
+    "secp256k1": "^3.5.0",
     "serialize-javascript": "^1.5.0",
     "update": "^0.7.4",
     "vue": "^2.5.16",
     "vue-infinite-scroll": "^2.0.2",
-    "vue-lazyload": "^1.2.3",
+    "vue-lazyload": "^1.2.4",
     "vue-router": "^2.8.1",
     "vue-server-renderer": "^2.5.16",
     "vue-swipe": "^2.4.0",
     "vuex": "^3.0.1",
     "vuex-router-sync": "^4.2.0",
-    "bn.js": "^4.11.8",
-    "ethereumjs-tx": "^1.3.4",
-    "ethjs-util": "^0.1.4",
-    "keccak": "^1.4.0",
-    "secp256k1": "^3.5.0"
+    "web3": "^0.20.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.6",
@@ -51,7 +53,7 @@
     "webpack": "^2.4.1",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-dev-server": "^2.11.2",
-    "webpack-hot-middleware": "^2.22.1",
+    "webpack-hot-middleware": "^2.22.2",
     "webpack-merge": "^4.1.2"
   }
 }
