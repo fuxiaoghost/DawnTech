@@ -13,7 +13,6 @@ const PHOTO = process.BROWSER ? () => System.import('./views/photo.vue') : requi
 const PANORAM = process.BROWSER ? () => System.import('./views/panoram.vue') : require('./views/panoram.vue'); 
 const CONTRACT = process.BROWSER ? () => System.import('./views/contract.vue') : require('./views/contract.vue');
 const KEY = process.BROWSER ? () => System.import('./views/key.vue') : require('./views/key.vue');
-const WALLET = process.BROWSER ? () => System.import('./views/wallet.vue') : require('./views/wallet.vue');
 var isMobile = function () {
     var userAgent = process.BROWSER ? navigator.userAgent : process.UA;
     return !!userAgent.match(/(iPhone|iPod|Android|ios)/i);
@@ -40,7 +39,7 @@ router = new Router({
         { path: '/photo/:category', name: 'photo', component: PHOTO },
         { path: '/contract', name: 'contract', component: CONTRACT},
         { path: '/key', name: 'key', component: KEY },
-        { path: '/wallet', name: 'wallet', component: WALLET }
+        { path: '*', name: 'blog', component: BLOG }
     ]
 });
 
